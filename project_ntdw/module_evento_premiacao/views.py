@@ -4,10 +4,7 @@ from django.shortcuts import render
 def index(request):
     """View function for home page of site."""
     context = {
-        'num_books': "num_books",
-        'num_instances': "num_instances",
-        'num_instances_available': "num_instances_available",
-        'num_authors': "num_authors",
+        'first_hello': "Hello World!",
     }
 
     # Render the HTML template index.html with the data in the context variable
