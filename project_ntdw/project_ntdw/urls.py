@@ -21,7 +21,7 @@ from django.conf.urls import include
 from django.conf import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('module_evento_premiacao/', include('module_evento_premiacao.urls')),
     path('', RedirectView.as_view(url='/module_evento_premiacao/', permanent=True)),
+    path('module_evento_premiacao/', include('module_evento_premiacao.urls')),
+    path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -88,8 +88,8 @@ h6 {
 #header {
   transition: all 0.5s;
   z-index: 997;
-  padding: 15px 0;
-  background: black;
+  padding: 10px 0;
+  background-color: black;
 }
 
 #header.header-scrolled,
@@ -356,8 +356,24 @@ h6 {
 }
 
 #footer{
-width: 100%;
-position: absolute;
-bottom: 0;
-left: 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+#main {
+    margin-top: 70px;
+    background: #6C7A89;
+    margin-left: 5px;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+body {
+    margin: 0px;
 }
