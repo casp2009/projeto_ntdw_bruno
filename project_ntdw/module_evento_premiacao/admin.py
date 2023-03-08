@@ -1,5 +1,5 @@
 from django.contrib import admin
-from module_evento_premiacao.models import *
+from .models import *
 
 
 admin.site.register(Cronograma)
