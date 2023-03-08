@@ -1,10 +1,8 @@
 from django.db import models
-import uuid
 
 
 class Evento(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text='Unique ID for this particular entity')
+    id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=200)
     descricao = models.CharField(max_length=200)
     ano = models.IntegerField()
@@ -19,8 +17,7 @@ class Evento(models.Model):
 
 
 class Cronograma(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text='Unique ID for this entity')
+    id = models.AutoField(primary_key=True)
     data_inicio = models.DateField(null=True, blank=True)
     data_final = models.DateField(null=True, blank=True)
     descricao = models.CharField(max_length=200)
@@ -35,8 +32,7 @@ class Cronograma(models.Model):
 
 
 class Projeto(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text='Unique ID for this entity')
+    id = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
     resumo = models.CharField(max_length=500)
     data_envio = models.DateField(null=True, blank=True)
@@ -53,8 +49,7 @@ class Projeto(models.Model):
 
 
 class Pessoa(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text='Unique ID for this entity')
+    id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=150)
     endereco = models.CharField(max_length=150)
     telefone = models.CharField(max_length=150)
@@ -65,12 +60,11 @@ class Pessoa(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return f'Nome: {self.nome}'
+        return f'Id: {self.id}, Nome: {self.nome}'
 
 
 class Autor(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text='Unique ID for this entity')
+    id = models.AutoField(primary_key=True)
     pessoa_id = models.ForeignKey('Pessoa', on_delete=models.SET_NULL, null=True)
     biografia = models.CharField(max_length=500)
 
@@ -82,8 +76,7 @@ class Autor(models.Model):
 
 
 class Join_Projeto_Autor(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text='Unique ID for this entity')
+    id = models.AutoField(primary_key=True)
     projeto_id = models.ForeignKey('Projeto', on_delete=models.SET_NULL, null=True)
     autor_id = models.ForeignKey('Autor', on_delete=models.SET_NULL, null=True)
 
@@ -95,8 +88,7 @@ class Join_Projeto_Autor(models.Model):
 
 
 class Avaliador(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text='Unique ID for this entity')
+    id = models.AutoField(primary_key=True)
     pessoa_id = models.ForeignKey('Pessoa', on_delete=models.SET_NULL, null=True)
     numero_registro_avaliador = models.CharField(max_length=50, null=False)
 
@@ -108,8 +100,7 @@ class Avaliador(models.Model):
 
 
 class Projeto_Avaliado(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text='Unique ID for this entity')
+    id = models.AutoField(primary_key=True)
     projeto_id = models.ForeignKey('Projeto', on_delete=models.SET_NULL, null=True)
     avaliador_id = models.ForeignKey('Avaliador', on_delete=models.SET_NULL, null=True)
     parecer = models.CharField(max_length=300, null=False)
