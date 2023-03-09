@@ -21,8 +21,8 @@
   <!-- Vendor CSS Files -->
   {% load static %}
   <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
-<!--  {% load static %}-->
-<!--  <link href="{% static 'assets/css/bootstrap-icons.css' %}" rel="stylesheet">-->
+  {% load static %}
+  <link href="{% static 'assets/css/bootstrap-icons.css' %}" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   {% load static %}
@@ -42,37 +42,31 @@
       <nav id="navbar" class="navbar order-last order-lg-0">
         <ul>
           <li><a class="nav-link scrollto active" href="{% url 'index' %}">Home</a></li>
-          <li class="dropdown"><a href="#"><span>Cronograma</span></a>
+          <li class="dropdown"><a href="#"><span>Cronogramas</span></a>
                 <ul>
                   <li><a href="#">Adicionar Cronograma</a></li>
-                  <li><a href="#">Listar Cronogramas</a></li>
+                  <li><a href="{% url 'cronogramas' %}">Listar Cronogramas</a></li>
                 </ul>
           </li>
-          <li class="dropdown"><a href="#"><span>Evento</span></a>
+          <li class="dropdown"><a href="#"><span>Eventos</span></a>
                 <ul>
                   <li><a href="#">Adicionar Evento</a></li>
                   <li><a href="#">Listar Eventos</a></li>
                 </ul>
           </li>
-          <li class="dropdown"><a href="#"><span>Projeto</span></a>
+          <li class="dropdown"><a href="#"><span>Projetos</span></a>
                 <ul>
                   <li><a href="#">Adicionar Projeto</a></li>
                   <li><a href="#">Listar Projetos</a></li>
                 </ul>
           </li>
-          <li class="dropdown"><a href="#"><span>Evento</span></a>
-                <ul>
-                  <li><a href="#">Adicionar Evento</a></li>
-                  <li><a href="#">Listar Eventos</a></li>
-                </ul>
-          </li>
-          <li class="dropdown"><a href="#"><span>Autor</span></a>
+          <li class="dropdown"><a href="#"><span>Autores</span></a>
                 <ul>
                   <li><a href="#">Adicionar Autor</a></li>
                   <li><a href="#">Listar Autores</a></li>
                 </ul>
           </li>
-          <li class="dropdown"><a href="#"><span>Avaliador</span></a>
+          <li class="dropdown"><a href="#"><span>Avaliadores</span></a>
                 <ul>
                   <li><a href="#">Adicionar Avaliador</a></li>
                   <li><a href="#">Listar Avaliadores</a></li>

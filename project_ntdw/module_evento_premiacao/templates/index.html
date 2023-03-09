@@ -1,5 +1,52 @@
 {% extends "generic_full.html" %}
 
 {% block content %}
-  <h1><strong>Quantidade de Autores: {{ autor_count }}</strong></h1>
+<div id="conteudo">
+  <div id="row1">
+    <a href="#autores">
+      <div class="block-conteudo">
+        <h1>{{ autor_count }}</h1>
+        <h4>Autores</h4>
+      </div>
+    </a>
+    <a href="{% url 'cronogramas' %}">
+      <div class="block-conteudo">
+        <h1>{{ cronograma_count }}</h1>
+        <h4>Cronogramas</h4>
+      </div>
+    </a>
+    <a href="#eventos">
+      <div class="block-conteudo">
+        <h1>{{ evento_count }}</h1>
+        <h4>Eventos</h4>
+      </div>
+    </a>
+    <a href="#projetos">
+      <div class="block-conteudo">
+        <h1>{{ projeto_count }}</h1>
+        <h4>Projetos</h4>
+      </div>
+    </a>
+    </div>
+  <div id="row2">
+    <a href="#avaliadores">
+      <div class="block-conteudo">
+        <h1>{{ avaliador_count }}</h1>
+        <h4>Avaliadores</h4>
+      </div>
+    </a>
+    <a href="#projetos_avaliados">
+      <div class="block-conteudo">
+        <h1>{{ projeto_avaliado_count }}</h1>
+        <h4>Projetos avaliados</h4>
+      </div>
+    </a>
+    <a href="#projetos_a_avaliar">
+      <div class="block-conteudo">
+        <h1>{{ projetos_a_avaliar }}</h1>
+        <h4>Projetos a avaliar</h4>
+      </div>
+    </a>
+  </div>
+</div>
 {% endblock %}

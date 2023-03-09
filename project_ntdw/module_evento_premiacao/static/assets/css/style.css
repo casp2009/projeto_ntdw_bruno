@@ -88,7 +88,7 @@ h6 {
 #header {
   transition: all 0.5s;
   z-index: 997;
-  padding: 10px 0;
+  padding: 5px 0;
   background-color: black;
 }
 
@@ -345,14 +345,14 @@ h6 {
 --------------------------------------------------------------*/
 #footer {
   background: black;
-  padding: 0 0 15px 0;
+  padding: 0 0 10px 0;
   color: #fff;
   font-size: 14px;
 }
 
 #footer .copyright {
   text-align: center;
-  padding-top: 15px;
+  padding-top: 10px;
 }
 
 #footer{
@@ -363,8 +363,8 @@ h6 {
 }
 
 #main {
-    margin-top: 70px;
-    background: #6C7A89;
+    margin-top: 60px;
+    /*background: #6C7A89;*/
     margin-left: 5px;
     margin-right: 5px;
     display: flex;
@@ -376,4 +376,58 @@ h6 {
 
 body {
     margin: 0px;
+    background: #FFFFFF;
+}
+
+.block-conteudo{
+    min-width: 200px;
+    min-height: 150px;
+    width: auto;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background: #D9D9D9;
+    margin: 15px;
+    padding: 5px;
+    border-radius: 10px;
+}
+.block-conteudo h1{
+    font-size: 75px;
+    font-weight: bold;
+}
+#conteudo a{
+    color: black;
+}
+
+.block-conteudo:hover{
+    -xpedu-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+    background: #C9C9C9;
+    cursor: pointer;
+}
+#row1{
+    display: flex;
+    flex-direction: row;
+}
+#row2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.rwd-table, th, tr, td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.rwd-table th{
+    background: #E9E9E9;
+}
+
+#link_deletar{
+    color: red;
 }

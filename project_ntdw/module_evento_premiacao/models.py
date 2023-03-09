@@ -5,7 +5,7 @@ class Cronograma(models.Model):
     id = models.AutoField(primary_key=True)
     data_inicio = models.DateField(null=True, blank=True)
     data_final = models.DateField(null=True, blank=True)
-    descricao = models.CharField(max_length=200)
+    descricao = models.CharField(max_length=300)
 
     class Meta:
         ordering = ['id']
@@ -36,7 +36,7 @@ class Projeto(models.Model):
     titulo = models.CharField(max_length=200)
     resumo = models.CharField(max_length=500)
     data_envio = models.DateField(null=True, blank=True)
-    foi_avaliado = models.BooleanField(null=True)
+    foi_avaliado = models.BooleanField(null=False, default=False)
     eventos = models.ForeignKey('Evento', on_delete=models.SET_NULL, null=True)
 
     class Meta:
