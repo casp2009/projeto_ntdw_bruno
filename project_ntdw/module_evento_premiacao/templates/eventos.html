@@ -1,0 +1,27 @@
+{% extends "generic_full.html" %}
+{% block title %}<title>Eventos</title>{% endblock %}
+{% block content %}
+    {% if eventos|length >= 1 %}
+        <table class="rwd-table">
+          <tr>
+            <th>Nome</th>
+            <th>Ano</th>
+            <th>Descrição</th>
+            <th>Cronograma</th>
+          </tr>
+            {% for evento in eventos %}
+                <tr>
+                    <td>{{ evento.nome }}</td>
+                    <td>{{ evento.ano }}</td>
+                    <td>{{ evento.descricao }}</td>
+                    <td>{{ evento.cronograma_fk.data_inicio }} até {{ evento.cronograma_fk.data_final }}</td>
+                    <td><a href="{% url 'evento_editar' evento.id %}">Editar</a></td>
+                    <td><a id="link_deletar" href="{% url 'evento_delete' evento.id %}"
+                           onclick="return confirm('Certeza que deseja deletar esse registro?')">Deletar</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Não existe nenhum evento cadastrado, <a href="{% url 'evento_create' %}">adicionar.</a></h2>
+    {% endif %}
+{% endblock %}

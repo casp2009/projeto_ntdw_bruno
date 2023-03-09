@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Events</title>
+  {% block title %}<title>Events</title>{% endblock %}
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -44,14 +44,14 @@
           <li><a class="nav-link scrollto active" href="{% url 'index' %}">Home</a></li>
           <li class="dropdown"><a href="#"><span>Cronogramas</span></a>
                 <ul>
-                  <li><a href="#">Adicionar Cronograma</a></li>
+                  <li><a href="{% url 'cronograma_create' %}">Adicionar Cronograma</a></li>
                   <li><a href="{% url 'cronogramas' %}">Listar Cronogramas</a></li>
                 </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Eventos</span></a>
                 <ul>
-                  <li><a href="#">Adicionar Evento</a></li>
-                  <li><a href="#">Listar Eventos</a></li>
+                  <li><a href="{% url 'evento_create' %}">Adicionar Evento</a></li>
+                  <li><a href="{% url 'eventos' %}">Listar Eventos</a></li>
                 </ul>
           </li>
           <li class="dropdown"><a href="#"><span>Projetos</span></a>

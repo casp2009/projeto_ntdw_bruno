@@ -1,4 +1,5 @@
 {% extends "generic_full.html" %}
+{% block title %}<title>Cronogramas</title>{% endblock %}
 {% block content %}
     {% if cronogramas|length >= 1 %}
         <table class="rwd-table">
@@ -13,11 +14,12 @@
                     <td>{{ cronograma.data_final }}</td>
                     <td>{{ cronograma.descricao }}</td>
                     <td><a href="{% url 'cronograma_editar' cronograma.id %}">Editar</a></td>
-                    <td><a id="link_deletar" href="{% url 'cronograma_delete' cronograma.id %}">Deletar</a></td>
+                    <td><a id="link_deletar" href="{% url 'cronograma_delete' cronograma.id %}"
+                           onclick="return confirm('Certeza que deseja deletar esse registro?')">Deletar</a></td>
                 </tr>
             {% endfor %}
         </table>
     {% else %}
-        <h2>Não existe nenhum cronograma cadastrado, <a href="#adicionar">adicionar.</a></h2>
+        <h2>Não existe nenhum cronograma cadastrado, <a href="{% url 'cronograma_create'%}">adicionar.</a></h2>
     {% endif %}
 {% endblock %}

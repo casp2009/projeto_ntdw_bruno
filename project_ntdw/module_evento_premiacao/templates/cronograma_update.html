@@ -1,18 +1,22 @@
 {% extends "generic_full.html" %}
+{% block title %}<title>Cronogramas Update</title>{% endblock %}
 {% block content %}
-  <h1>Alterar Cronograma</h1>
-  <form action="{% url 'cronograma_update' cronograma.id %}" method="post">
+<div class="container_form">
+
+  <form action="{% url 'cronograma_editar' cronograma.id %}" method="POST">
     {% csrf_token %}
-    <label for="datai">Data inicial</label>
-    <input id="datai" type="date" name="data_inicial" value="{{cronograma.data_inicio}}"/>
+    <h1>Alterar Cronograma</h1><br />
+    <label for="datai">Data inicial atual: {{cronograma.data_inicio}}</label><br />
+    <input id="datai" type="date" name="data_inicial"/><br />
 
-    <label for="dataf">Data final</label>
-    <input id="dataf" type="date" name="data_final" value="{{cronograma.data_final}}"/>
+    <label for="dataf">Data final atual: {{cronograma.data_final}}</label><br />
+    <input id="dataf" type="date" name="data_final"/><br />
 
-    <label for="text_area">Descrição</label>
+    <label for="text_area">Descrição</label><br />
     <textarea id="text_area" name="descricao" rows="4" cols="50" maxlength="300">
       {{cronograma.descricao}}
-    </textarea>
+    </textarea><br />
     <button type="submit">Alterar</button>
   </form>
+</div>
 {% endblock %}

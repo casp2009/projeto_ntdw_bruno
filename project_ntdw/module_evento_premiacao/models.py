@@ -5,7 +5,7 @@ class Cronograma(models.Model):
     id = models.AutoField(primary_key=True)
     data_inicio = models.DateField(null=True, blank=True)
     data_final = models.DateField(null=True, blank=True)
-    descricao = models.CharField(max_length=300)
+    descricao = models.CharField(max_length=300, null=True)
 
     class Meta:
         ordering = ['id']
