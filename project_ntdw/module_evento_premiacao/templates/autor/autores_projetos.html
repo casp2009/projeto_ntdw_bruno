@@ -1,0 +1,37 @@
+{% extends "generic_full.html" %}
+{% block title %}<title>Autores</title>{% endblock %}
+
+{% block content %}
+    {% if autores|length >= 1 and projetos|length >= 1 %}
+        <table class="table table-hover" style="width: 50%; margin-left: auto; margin-right: auto; margin-top: 20px;">
+            <tr>
+                <th>Nome</th>
+                <th>Edereço</th>
+                <th>Telefone</th>
+                <th>Nº de registro</th>
+                <th>Formação</th>
+                <th>Biografia</th>
+                <th>Projetos</th>
+            </tr>
+            {% for autor in autores %}
+                <tr>
+                    <td>{{ autor.pessoa.nome }}</td>
+                    <td>{{ autor.pessoa.endereco }}</td>
+                    <td>{{ autor.pessoa.telefone }}</td>
+                    <td>{{ autor.pessoa.registro_geral }}</td>
+                    <td>{{ autor.pessoa.formacao }}</td>
+                    <td>{{ autor.biografia }}</td>
+                    <td>
+                    {% for projeto in projetos %}
+                        {% if projeto.autor.nome == autor.nome %}
+                            {{ projeto.titulo }}<br />
+                        {% endif %}
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Não existem ligações cadastradas.</a></h2>
+    {% endif %}
+{% endblock %}

@@ -19,6 +19,7 @@ urlpatterns = [
     path('autor_editar/<int:id>', autor_editar, name='autor_editar'),
     path('autor_delete/<int:id>', autor_delete, name='autor_delete'),
     path('autor_create/', autor_create, name='autor_create'),
+    path('autores_projetos/', autores_projetos, name='autores_projetos'),
 
     path('avaliadores/', avaliadores, name='avaliadores'),
     path('avaliador_editar/<int:id>', avaliador_editar, name='avaliador_editar'),
@@ -29,5 +30,5 @@ urlpatterns = [
     path('projeto_editar/<int:id>', projeto_editar, name='projeto_editar'),
     path('projeto_delete/<int:id>', projeto_delete, name='projeto_delete'),
     path('projeto_create/', projeto_create, name='projeto_create'),
-
+    path('projetos_nao_avaliados/', projetos_nao_avaliados, name='projetos_nao_avaliados'),
 ]

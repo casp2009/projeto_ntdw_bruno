@@ -144,6 +144,11 @@ def autor_create(request):
         return render(request, 'autor/autores_create.html', {'form_pessoa': form_pessoa, 'form_autor': form_autor})
 
 
+def autores_projetos(request):
+    return render(request, 'autor/autores_projetos.html', {'projetos': Projeto.objects.all(),
+                                                           'autores': Autor.objects.all()})
+
+
 def autor_delete(request, id):
     autor = Autor.objects.get(id=id)
     if autor.pessoa is None:
@@ -273,6 +278,11 @@ def avaliador_editar(request, id):
 
 def projetos(request):
     return render(request, 'projetos/projetos.html', {'projetos': Projeto.objects.all()})
+
+
+def projetos_nao_avaliados(request):
+    projetos = Projeto.objects.filter(foi_avaliado=False).all()
+    return render(request, 'projetos/projetos_nao_avaliados.html', {'projetos': projetos})
 
 
 def projeto_create(request):
