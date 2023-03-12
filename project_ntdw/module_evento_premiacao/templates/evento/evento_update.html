@@ -1,28 +1,28 @@
 {% extends "generic_full.html" %}
-{% block title %}<title>Criar evento</title>{% endblock %}
+
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% block title %}<title>Update evento</title>{% endblock %}
+
 {% block content %}
 <div class="container_form">
     <form action="{% url 'evento_editar' evento.id %}" method="POST">
         <h1>Alterar evento</h1>
         {% csrf_token %}
-        <label for="nome">Nome:</label><br/>
-        <input id="nome" type="text" name="nome" value="{{ evento.nome }}"/><br/>
 
-        <label for="text_area">Descrição:</label><br/>
-        <textarea id="text_area" name="descricao" rows="4" cols="50" maxlength="300">{{ evento.descricao }}</textarea><br/>
+        {% bootstrap_form form %}
 
-        <label for="ano">Ano:</label><br/>
-        <input id="ano" type="text" name="ano" value="{{ evento.ano }}"/><br/>
-
-        <p><label for='idcoordenador'>Cronograma: </label><br/>
-            <select name='cronograma_fk' id="idcoordenador">
-                <option>----Selecione----</option>
-                {% for a in cronogramas %}
-                <option value="{{ a.id }}" {% if a.id == evento.cronograma_fk.id%} selected {% endif %}>{{ a.data_inicio }} até {{ a.data_final }}</option>
-                {% endfor %}
-            </select>
-        </p><br/>
-        <button type="submit">Salvar</button>
+        {% buttons %}
+        <button type="submit" class="btn btn-primary">Alterar</button>
+        {% endbuttons %}
     </form>
 </div>
 {% endblock %}

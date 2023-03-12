@@ -1,0 +1,32 @@
+{% extends "generic_full.html" %}
+{% block title %}<title>Avaliadores</title>{% endblock %}
+
+{% block content %}
+    {% if avaliadores|length >= 1 %}
+        <table class="table table-hover" style="width: 50%; margin-left: auto; margin-right: auto; margin-top: 20px;">
+            <tr>
+                <th>Nome</th>
+                <th>Edereço</th>
+                <th>Telefone</th>
+                <th>Nº de registro</th>
+                <th>Formação</th>
+                <th>Nº de registro avaliador</th>
+            </tr>
+            {% for avaliador in avaliadores %}
+                <tr>
+                    <td>{{ avaliador.pessoa.nome }}</td>
+                    <td>{{ avaliador.pessoa.endereco }}</td>
+                    <td>{{ avaliador.pessoa.telefone }}</td>
+                    <td>{{ avaliador.pessoa.registro_geral }}</td>
+                    <td>{{ avaliador.pessoa.formacao }}</td>
+                    <td>{{ avaliador.numero_registro_avaliador }}</td>
+                    <td><a href="{% url 'avaliador_editar' avaliador.id %}">Editar</a></td>
+                    <td><a id="link_deletar" href="{% url 'avaliador_delete' avaliador.id %}"
+                           onclick="return confirm('Certeza que deseja deletar esse registro?')">Deletar</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Não existe nenhum avaliador cadastrado, <a href="{% url 'avaliador_create' %}">adicionar.</a></h2>
+    {% endif %}
+{% endblock %}

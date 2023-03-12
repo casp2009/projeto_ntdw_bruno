@@ -10,16 +10,17 @@
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 
-{% block title %}<title>Cronogramas Update</title>{% endblock %}
+{% block title %}<title>Autor Update</title>{% endblock %}
 
 {% block content %}
 <div class="container_form">
 
-  <form action="{% url 'cronograma_editar' cronograma.id %}" method="POST">
+  <form action="{% url 'autor_editar' autor.id %}" method="POST">
     <h1>Editar um cronograma</h1>
     {% csrf_token %}
 
-    {% bootstrap_form form %}
+    {% bootstrap_form form_pessoa %}
+    {% bootstrap_form form_autor %}
 
     {% buttons %}
     <button type="submit" class="btn btn-primary">Alterar</button>

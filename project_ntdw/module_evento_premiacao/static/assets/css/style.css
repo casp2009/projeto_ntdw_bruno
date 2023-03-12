@@ -340,43 +340,27 @@ h6 {
   display: block;
 }
 
-/*--------------------------------------------------------------
-# Footer
---------------------------------------------------------------*/
-#footer {
-  background: black;
-  padding: 0 0 10px 0;
-  color: #fff;
-  font-size: 14px;
-}
-
-#footer .copyright {
-  text-align: center;
-  padding-top: 10px;
-}
-
-#footer{
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-}
 
 #main {
-    margin-top: 60px;
+    margin-top: 70px;
     background: #f0eeebd9
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 1px;
+    margin-right: 1px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    overflow-y: auto;
 }
 
 body {
     margin: 0px;
     background: #FFFFFF;
+}
+
+a:link {
+  text-decoration: none;
 }
 
 .block-conteudo{
@@ -389,8 +373,7 @@ body {
     display: flex;
     flex-direction: column;
     background: #D9D9D9;
-    margin: 15px;
-    padding: 5px;
+    margin: 15px!important ;
     border-radius: 10px;
 }
 .block-conteudo h1{
@@ -419,15 +402,6 @@ body {
     align-items: center;
 }
 
-.rwd-table, th, tr, td {
-    border: 1px solid black;
-    padding: 10px;
-}
-
-.rwd-table th{
-    background: #E9E9E9;
-}
-
 #link_deletar{
     color: red;
 }
@@ -450,9 +424,51 @@ body {
     font-weight: bold;
 }
 
-.container_form form button{
-    margin-top: 5px;
-    height: 40px;
-    width: 120px;
-    border-radius: 10px;
+#main div, form{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#message{
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 40%;
+    right: 40%;
+    width: 20%;
+    padding-top: 10px;
+    z-index: 9999;
+}
+
+#message div{
+  animation: fadeIn 1s;
+  -webkit-animation: fadeIn 1s;
+  -moz-animation: fadeIn 1s;
+  -o-animation: fadeIn 1s;
+  -ms-animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-moz-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-webkit-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-o-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@-ms-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }

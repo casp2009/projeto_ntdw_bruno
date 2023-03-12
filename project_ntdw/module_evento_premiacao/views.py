@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Autor, Avaliador, Projeto, Evento, Cronograma, Projeto_Avaliado
+from django.contrib import messages
+from .models import *
+from .forms import *
 
 
 # Create your views here.
@@ -17,6 +19,7 @@ def index(request):
     # Render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
 
+
 # -------------------- CRONOGRAMAS --------------------------
 def cronogramas(request):
     return render(request, 'cronograma/cronogramas.html', {'cronogramas': Cronograma.objects.all()})
@@ -29,27 +32,39 @@ def cronograma_delete(request, id):
 
 
 def cronograma_editar(request, id):
+    cronograma = Cronograma.objects.get(id=id)
+    form = FormCronograma(instance=cronograma)
+
     if request.method == 'GET':
-        return render(request, 'cronograma/cronograma_update.html', {'cronograma': Cronograma.objects.get(id=id)})
+        return render(request, 'cronograma/cronograma_update.html',
+                      {'form': form, 'cronograma': cronograma})
     elif request.method == 'POST':
-        cronograma = Cronograma.objects.get(id=id)
-        cronograma.data_inicio = request.POST.get('data_inicial')
-        cronograma.data_final = request.POST.get('data_final')
-        cronograma.descricao = request.POST.get('descricao')
-        cronograma.save()
-        return redirect(cronogramas)
+        form = FormCronograma(request.POST, instance=cronograma)
+        if form.is_valid():
+
+            cronograma = form.save(commit=False)
+            cronograma.descricao = form.cleaned_data['descricao']
+            cronograma.data_inicio = form.cleaned_data['data_inicio']
+            cronograma.data_final = form.cleaned_data['data_final']
+            cronograma.save()
+
+            messages.success(request, 'O cronograma foi alterado com sucesso.')
+            return redirect(cronogramas)
+        else:
+            messages.error(request, 'O formulário é inválido.')
+            return render(request, 'cronograma/cronograma_update.html', {'form': form, 'cronograma': cronograma})
 
 
 def cronograma_create(request):
+    form = FormCronograma()
     if request.method == 'POST':
-        dInicial = request.POST.get('data_inicial')
-        dFinal = request.POST.get('data_final')
-        vdescricao = request.POST.get('descricao')
-        Cronograma.objects.create(data_inicio=dInicial, data_final=dFinal, descricao=vdescricao)
-        Cronograma.objects.all()
+        form = FormCronograma(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'O cronograma foi criado com sucesso.')
         return redirect(cronogramas)
     elif request.method == 'GET':
-        return render(request, 'cronograma/cronograma_create.html', {})
+        return render(request, 'cronograma/cronograma_create.html', {'form': form})
 
 
 # -------------------- EVENTOS -----------------
@@ -61,32 +76,192 @@ def eventos(request):
 def evento_delete(request, id):
     evento = Evento.objects.get(id=id)
     evento.delete()
+    messages.success(request, 'O registro foi deletado.')
     return redirect(eventos)
 
 
 def evento_editar(request, id):
+    evento = Evento.objects.get(id=id)
+    form = FormEvento(instance=evento)
+
     if request.method == 'GET':
         return render(request, 'evento/evento_update.html',
-                      {'evento': Evento.objects.get(id=id), 'cronogramas': Cronograma.objects.all()})
+                      {'form': form, 'evento': evento})
     elif request.method == 'POST':
-        evento = Evento.objects.get(id=id)
-        evento.nome = request.POST.get('nome')
-        evento.descricao = request.POST.get('descricao')
-        evento.ano = request.POST.get('ano')
-        evento.cronograma_fk = Cronograma.objects.get(id=request.POST.get('cronograma_fk'))
-        evento.save()
-        return redirect(eventos)
+        form = FormEvento(request.POST, instance=evento)
+        if form.is_valid():
+            evento = form.save(commit=False)
+            evento.nome = form.cleaned_data['nome']
+            evento.descricao = form.cleaned_data['descricao']
+            evento.ano = form.cleaned_data['ano']
+            evento.cronograma_fk = form.cleaned_data['cronograma_fk']
+            evento.save()
+            messages.success(request, 'O cronograma foi alterado com sucesso.')
+            return redirect(eventos)
+        else:
+            messages.error(request, 'O formulário é inválido.')
+            return render(request, 'evento/evento_update.html', {'form': form, 'evento': evento})
 
 
 def evento_create(request):
+    form = FormEvento()
     if request.method == 'POST':
-        nome = request.POST.get('nome')
-        descricao = request.POST.get('descricao')
-        ano = request.POST.get('ano')
-        cronograma_fk = Cronograma.objects.get(id=request.POST.get('cronograma_fk'))
-        Evento.objects.create(nome=nome, descricao=descricao, ano=ano, cronograma_fk=cronograma_fk)
-        Evento.objects.all()
-
+        form = FormEvento(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'O evento foi criado com sucesso.')
+        else:
+            messages.error(request, 'O formulário não é válido.')
         return redirect(eventos)
     elif request.method == 'GET':
-        return render(request, 'evento/evento_create.html', {'cronogramas': Cronograma.objects.all()})
+        return render(request, 'evento/evento_create.html', {'form': form})
+
+
+# ------------- AUTORES ----------------------
+
+def autores(request):
+    return render(request, 'autor/autores.html', {'autores': Autor.objects.all()})
+
+
+def autor_create(request):
+    form_pessoa = FormPessoa()
+    form_autor = FormAutor()
+    if request.method == 'POST':
+        form_pessoa = FormPessoa(request.POST)
+        form_autor = FormAutor(request.POST)
+
+        if form_pessoa.is_valid() and form_autor.is_valid():
+            pessoa = form_pessoa.save()
+            autor = form_autor.save(commit=False)
+            autor.pessoa = pessoa
+            autor.save()
+            messages.success(request, 'O autor foi criado com sucesso.')
+        else:
+            messages.error(request, 'O formulário não é válido.')
+        return redirect(autores)
+    elif request.method == 'GET':
+        return render(request, 'autor/autores_create.html', {'form_pessoa': form_pessoa, 'form_autor': form_autor})
+
+
+def autor_delete(request, id):
+    autor = Autor.objects.get(id=id)
+    if autor.pessoa is None:
+        pass
+    else:
+        pessoa = Pessoa.objects.get(id=autor.pessoa.id)
+        pessoa.delete()
+    messages.success(request, 'O registro foi deletado.')
+    autor.delete()
+    return redirect(autores)
+
+
+def autor_editar(request, id):
+    autor = Autor.objects.get(id=id)
+    form_autor = FormAutor(instance=autor)
+
+    pessoa = Pessoa.objects.get(id=autor.pessoa.id)
+    form_pessoa = FormPessoa(instance=pessoa)
+
+    if request.method == 'GET':
+        return render(request, 'autor/autores_update.html',
+                      {'form_autor': form_autor, 'form_pessoa': form_pessoa, 'autor': autor})
+    elif request.method == 'POST':
+
+        form_autor = FormAutor(request.POST, instance=autor)
+        form_pessoa = FormPessoa(request.POST, instance=pessoa)
+
+        if form_autor.is_valid() and form_pessoa.is_valid():
+            pessoa = form_pessoa.save(commit=False)
+            pessoa.nome = form_pessoa.cleaned_data['nome']
+            pessoa.endereco = form_pessoa.cleaned_data['endereco']
+            pessoa.telefone = form_pessoa.cleaned_data['telefone']
+            pessoa.registro_geral = form_pessoa.cleaned_data['registro_geral']
+            pessoa.formacao = form_pessoa.cleaned_data['formacao']
+            pessoa.save()
+
+            autor = form_autor.save(commit=False)
+            autor.biografia = form_autor.cleaned_data['biografia']
+            autor.save()
+
+            messages.success(request, 'O autor foi alterado com sucesso.')
+            return redirect(autores)
+        else:
+            messages.error(request, 'O formulário é inválido.')
+            return render(request, 'autor/autores_update.html', {'form_autor': form_autor, 'form_pessoa': form_pessoa,
+                                                                 'autor': autor})
+
+
+# ------------- AVALIADORES ----------------------
+
+def avaliadores(request):
+    return render(request, 'avaliador/avaliadores.html', {'avaliadores': Avaliador.objects.all()})
+
+
+def avaliador_create(request):
+    form_pessoa = FormPessoa()
+    form_avaliador = FormAvaliador()
+    if request.method == 'POST':
+        form_pessoa = FormPessoa(request.POST)
+        form_avaliador = FormAvaliador(request.POST)
+
+        if form_pessoa.is_valid() and form_avaliador.is_valid():
+            pessoa = form_pessoa.save()
+            avaliador = form_avaliador.save(commit=False)
+            avaliador.pessoa = pessoa
+            avaliador.save()
+            messages.success(request, 'O avaliador foi criado com sucesso.')
+        else:
+            messages.error(request, 'O formulário não é válido.')
+        return redirect(autores)
+    elif request.method == 'GET':
+        return render(request, 'avaliador/avaliador_create.html', {'form_pessoa': form_pessoa, 'form_avaliador': form_avaliador})
+
+
+def avaliador_delete(request, id):
+    avaliador = Avaliador.objects.get(id=id)
+    if avaliador.pessoa is None:
+        pass
+    else:
+        pessoa = Pessoa.objects.get(id=avaliador.pessoa.id)
+        pessoa.delete()
+
+    messages.success(request, 'O registro foi deletado.')
+    avaliador.delete()
+    return redirect(autores)
+
+
+def avaliador_editar(request, id):
+    avaliador = Avaliador.objects.get(id=id)
+    form_avaliador = FormAvaliador(instance=avaliador)
+
+    pessoa = Pessoa.objects.get(id=avaliador.pessoa.id)
+    form_pessoa = FormPessoa(instance=pessoa)
+
+    if request.method == 'GET':
+        return render(request, 'avaliador/avaliador_update.html',
+                      {'form_avaliador': form_avaliador, 'form_pessoa': form_pessoa, 'avaliador': avaliador})
+    elif request.method == 'POST':
+
+        form_avaliador = FormAvaliador(request.POST, instance=avaliador)
+        form_pessoa = FormPessoa(request.POST, instance=pessoa)
+
+        if form_avaliador.is_valid() and form_pessoa.is_valid():
+            pessoa = form_pessoa.save(commit=False)
+            pessoa.nome = form_pessoa.cleaned_data['nome']
+            pessoa.endereco = form_pessoa.cleaned_data['endereco']
+            pessoa.telefone = form_pessoa.cleaned_data['telefone']
+            pessoa.registro_geral = form_pessoa.cleaned_data['registro_geral']
+            pessoa.formacao = form_pessoa.cleaned_data['formacao']
+            pessoa.save()
+
+            avaliador = form_avaliador.save(commit=False)
+            avaliador.numero_registro_avaliador = form_avaliador.cleaned_data['numero_registro_avaliador']
+            avaliador.save()
+
+            messages.success(request, 'O avaliador foi alterado com sucesso.')
+            return redirect(avaliadores)
+        else:
+            messages.error(request, 'O formulário é inválido.')
+            return render(request, 'avaliador/avaliador_update.html',
+                          {'form_avaliador': form_avaliador, 'form_pessoa': form_pessoa,
+                           'avaliador': avaliador})

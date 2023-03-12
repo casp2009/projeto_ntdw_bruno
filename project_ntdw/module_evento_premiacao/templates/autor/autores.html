@@ -1,0 +1,32 @@
+{% extends "generic_full.html" %}
+{% block title %}<title>Autores</title>{% endblock %}
+
+{% block content %}
+    {% if autores|length >= 1 %}
+        <table class="table table-hover" style="width: 50%; margin-left: auto; margin-right: auto; margin-top: 20px;">
+            <tr>
+                <th>Nome</th>
+                <th>Edereço</th>
+                <th>Telefone</th>
+                <th>Nº de registro</th>
+                <th>Formação</th>
+                <th>Biografia</th>
+            </tr>
+            {% for autor in autores %}
+                <tr>
+                    <td>{{ autor.pessoa.nome }}</td>
+                    <td>{{ autor.pessoa.endereco }}</td>
+                    <td>{{ autor.pessoa.telefone }}</td>
+                    <td>{{ autor.pessoa.registro_geral }}</td>
+                    <td>{{ autor.pessoa.formacao }}</td>
+                    <td>{{ autor.biografia }}</td>
+                    <td><a href="{% url 'autor_editar' autor.id %}">Editar</a></td>
+                    <td><a id="link_deletar" href="{% url 'autor_delete' autor.id %}"
+                           onclick="return confirm('Certeza que deseja deletar esse registro?')">Deletar</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Não existe nenhum autor cadastrado, <a href="{% url 'autor_create'%}">adicionar.</a></h2>
+    {% endif %}
+{% endblock %}

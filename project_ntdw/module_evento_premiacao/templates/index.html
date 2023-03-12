@@ -3,7 +3,7 @@
 {% block content %}
 <div id="conteudo">
   <div id="row1">
-    <a href="#autores">
+    <a href="{% url 'autores' %}">
       <div class="block-conteudo">
         <h1>{{ autor_count }}</h1>
         <h4>Autores</h4>
@@ -15,7 +15,7 @@
         <h4>Cronogramas</h4>
       </div>
     </a>
-    <a href="#eventos">
+    <a href="{% url 'eventos' %}">
       <div class="block-conteudo">
         <h1>{{ evento_count }}</h1>
         <h4>Eventos</h4>
@@ -29,7 +29,7 @@
     </a>
     </div>
   <div id="row2">
-    <a href="#avaliadores">
+    <a href="{% url 'avaliadores' %}">
       <div class="block-conteudo">
         <h1>{{ avaliador_count }}</h1>
         <h4>Avaliadores</h4>

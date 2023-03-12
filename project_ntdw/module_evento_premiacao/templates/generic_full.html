@@ -1,107 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  {% block title %}<title>Events</title>{% endblock %}
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+    {% block title %}<title>Events</title>{% endblock %}
+    <meta content="" name="description">
+    <meta content="" name="keywords">
 
-  <!-- Favicons -->
-  {% load static %}
-  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
-  {% load static %}
-  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+    <!-- Favicons -->
+    {% load static %}
+    <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+    {% load static %}
+    <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  {% load static %}
-  <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
-  {% load static %}
-  <link href="{% static 'assets/css/bootstrap-icons.css' %}" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    {% load static %}
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    {% load static %}
+    <link href="{% static 'assets/css/bootstrap-icons.css' %}" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
-  {% load static %}
-  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    {% load static %}
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    {# Load the tag library #}
+    {% load bootstrap5 %}
+
+    {# Load CSS and JavaScript #}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# Display django.contrib.messages as Bootstrap alerts #}
+    {% bootstrap_messages %}
+
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top ">
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center justify-content-lg-between">
 
-      <h1 class="logo me-auto me-lg-0"><a href="{% url 'index' %}">Events<span>.</span></a></h1>
-      <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto me-lg-0"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        <h1 class="logo me-auto me-lg-0"><a href="{% url 'index' %}">Events<span>.</span></a></h1>
 
-      <nav id="navbar" class="navbar order-last order-lg-0">
-        <ul>
-          <li><a class="nav-link scrollto active" href="{% url 'index' %}">Home</a></li>
-          <li class="dropdown"><a href="#"><span>Cronogramas</span></a>
-                <ul>
-                  <li><a href="{% url 'cronograma_create' %}">Adicionar Cronograma</a></li>
-                  <li><a href="{% url 'cronogramas' %}">Listar Cronogramas</a></li>
-                </ul>
-          </li>
-          <li class="dropdown"><a href="#"><span>Eventos</span></a>
-                <ul>
-                  <li><a href="{% url 'evento_create' %}">Adicionar Evento</a></li>
-                  <li><a href="{% url 'eventos' %}">Listar Eventos</a></li>
-                </ul>
-          </li>
-          <li class="dropdown"><a href="#"><span>Projetos</span></a>
-                <ul>
-                  <li><a href="#">Adicionar Projeto</a></li>
-                  <li><a href="#">Listar Projetos</a></li>
-                </ul>
-          </li>
-          <li class="dropdown"><a href="#"><span>Autores</span></a>
-                <ul>
-                  <li><a href="#">Adicionar Autor</a></li>
-                  <li><a href="#">Listar Autores</a></li>
-                </ul>
-          </li>
-          <li class="dropdown"><a href="#"><span>Avaliadores</span></a>
-                <ul>
-                  <li><a href="#">Adicionar Avaliador</a></li>
-                  <li><a href="#">Listar Avaliadores</a></li>
-                </ul>
-          </li>
-          <li class="dropdown"><a href="#"><span>Avaliação de projetos</span></a>
-                <ul>
-                  <li><a href="#">Projetos avaliados</a></li>
-                  <li><a href="#">Projetos para avaliar</a></li>
-                </ul>
-          </li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+        <nav id="navbar" class="navbar order-last order-lg-0">
+            <ul>
+                <li><a class="nav-link scrollto active" href="{% url 'index' %}">Home</a></li>
+                <li class="dropdown"><a href="#"><span>Cronogramas</span></a>
+                    <ul>
+                        <li><a href="{% url 'cronograma_create' %}">Adicionar Cronograma</a></li>
+                        <li><a href="{% url 'cronogramas' %}">Listar Cronogramas</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Eventos</span></a>
+                    <ul>
+                        <li><a href="{% url 'evento_create' %}">Adicionar Evento</a></li>
+                        <li><a href="{% url 'eventos' %}">Listar Eventos</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Projetos</span></a>
+                    <ul>
+                        <li><a href="#">Adicionar Projeto</a></li>
+                        <li><a href="#">Listar Projetos</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Autores</span></a>
+                    <ul>
+                        <li><a href="{% url 'autor_create' %}">Adicionar Autor</a></li>
+                        <li><a href="{% url 'autores' %}">Listar Autores</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Avaliadores</span></a>
+                    <ul>
+                        <li><a href="{% url 'avaliador_create' %}">Adicionar Avaliador</a></li>
+                        <li><a href="{% url 'avaliadores' %}">Listar Avaliadores</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#"><span>Avaliação de projetos</span></a>
+                    <ul>
+                        <li><a href="#">Projetos avaliados</a></li>
+                        <li><a href="#">Projetos para avaliar</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
     </div>
-  </header><!-- End Header -->
+</header><!-- End Header -->
 
-  <main id="main">
-    {% block content %}{% endblock %}
-  </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer">
-    <div class="container">
-      <div class="copyright">
-        &copy; Copyright <strong><span>Bruno</span></strong>. All Rights Reserved
-      </div>
+<main id="main">
+    {% if messages %}
+    <div id="message">;
+        {% for message in messages %}
+        <div class="alert {{ message.tags }}  alert-dismissable" style="box-shadow: 1px 1px 5px black;">
+            {{ message }}
+            <a href="#" class="close" data-dismiss="alert" aria-label="close" onclick=" document.getElementById('message').remove(); ">x</a>
+        </div>
+        {% endfor %}
     </div>
-  </footer><!-- End Footer -->
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+</main><!-- End #main -->
 
-  <div id="preloader"></div>
+<div id="preloader"></div>
 
-  <!-- Template Main JS File -->
-  {% load static %}
-  <script src="{% static 'assets/js/main.js' %}"></script>
+<!-- Template Main JS File -->
+{% load static %}
+<script src="{% static 'assets/js/main.js' %}"></script>
 
 </body>
 </html>

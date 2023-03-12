@@ -290,3 +290,7 @@
   new PureCounter();
 
 })()
+
+function dismiss(){
+
+}

@@ -6,14 +6,13 @@ class Cronograma(models.Model):
     data_inicio = models.DateField(null=True, blank=True)
     data_final = models.DateField(null=True, blank=True)
     descricao = models.CharField(max_length=300, null=True)
-
     class Meta:
         ordering = ['id']
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'Cronograma id: {self.id}, descrição: {self.descricao}, data inicial: {self.data_inicio},' \
-               f' data final: {self.data_final}'
+        return f'{self.descricao}, do dia {self.data_inicio},' \
+               f' até o dia {self.data_final}.'
 
 
 class Evento(models.Model):
@@ -29,23 +28,6 @@ class Evento(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'Evento id: {self.id}, nome: {self.nome}, descrição: {self.descricao}, ano do acontecimento: {self.ano}'
-
-
-class Projeto(models.Model):
-    id = models.AutoField(primary_key=True)
-    titulo = models.CharField(max_length=200)
-    resumo = models.CharField(max_length=500)
-    data_envio = models.DateField(null=True, blank=True)
-    foi_avaliado = models.BooleanField(null=False, default=False)
-    eventos = models.ForeignKey('Evento', on_delete=models.SET_NULL, null=True)
-
-    class Meta:
-        ordering = ['id']
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return f'Projeto id: {self.id}, titulo: {self.titulo}, resumo: {self.resumo},' \
-               f' data de envio: {self.data_envio}, foi avaliado: {self.foi_avaliado}'
 
 
 class Pessoa(models.Model):
@@ -65,44 +47,50 @@ class Pessoa(models.Model):
 
 class Autor(models.Model):
     id = models.AutoField(primary_key=True)
-    pessoa_id = models.ForeignKey(Pessoa, on_delete=models.CASCADE, null=False)
+    pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE, default=None, null=True)
     biografia = models.CharField(max_length=500)
 
     class Meta:
         ordering = ['id']
 
     def __str__(self):
-        return f'{self.pessoa_id.nome}'
+        return f'{self.pessoa.nome}'
 
 
-class Join_Projeto_Autor(models.Model):
+class Projeto(models.Model):
     id = models.AutoField(primary_key=True)
-    projeto_id = models.ForeignKey('Projeto', on_delete=models.CASCADE, null=False)
-    autor_id = models.ForeignKey('Autor', on_delete=models.CASCADE, null=False)
+    titulo = models.CharField(max_length=200)
+    resumo = models.CharField(max_length=500)
+    data_envio = models.DateField(null=True, blank=True)
+    foi_avaliado = models.BooleanField(null=False, default=False)
+    eventos = models.ManyToManyField(Evento)
+    autores = models.ManyToManyField(Autor)
 
     class Meta:
         ordering = ['id']
 
     def __str__(self):
-        return f'Projeto: {self.projeto_id.titulo}, Autor: {self.autor_id.pessoa_id.nome}'
+        """String for representing the Model object."""
+        return f'Projeto id: {self.id}, titulo: {self.titulo}, resumo: {self.resumo},' \
+               f' data de envio: {self.data_envio}, foi avaliado: {self.foi_avaliado}'
 
 
 class Avaliador(models.Model):
     id = models.AutoField(primary_key=True)
-    pessoa_id = models.ForeignKey(Pessoa, on_delete=models.CASCADE, null=False)
+    pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE, default=None, null=True)
     numero_registro_avaliador = models.CharField(max_length=50, null=False)
 
     class Meta:
         ordering = ['id']
 
     def __str__(self):
-        return f'{self.pessoa_id.nome}'
+        return f'{self.pessoa.nome}'
 
 
 class Projeto_Avaliado(models.Model):
     id = models.AutoField(primary_key=True)
-    projeto_id = models.ForeignKey(Projeto, on_delete=models.CASCADE, null=False)
-    avaliador_id = models.ForeignKey(Avaliador, on_delete=models.CASCADE, null=False)
+    projeto = models.OneToOneField(Projeto, on_delete=models.CASCADE)
+    avaliador = models.OneToOneField(Avaliador, on_delete=models.CASCADE)
     parecer = models.CharField(max_length=300, null=False)
     nota = models.DecimalField(max_digits=2, decimal_places=False)
     data_avaliacao = models.DateTimeField(null=False)
