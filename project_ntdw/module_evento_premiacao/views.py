@@ -227,7 +227,7 @@ def avaliador_delete(request, id):
 
     messages.success(request, 'O registro foi deletado.')
     avaliador.delete()
-    return redirect(autores)
+    return redirect(avaliadores)
 
 
 def avaliador_editar(request, id):
