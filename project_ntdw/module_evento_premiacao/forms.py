@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from easy_select2 import *
 
 
 class FormCronograma(forms.ModelForm):
@@ -51,3 +52,20 @@ class FormAvaliador(forms.ModelForm):
     class Meta:
         model = Avaliador
         fields = ['numero_registro_avaliador']
+
+
+class FormProjeto(forms.ModelForm):
+    titulo = forms.CharField(label='Titulo:', widget=forms.TextInput(attrs={'placeholder': ''}))
+    resumo = forms.CharField(label='Resumo', widget=forms.Textarea(attrs={"rows": "5", 'placeholder': ''}))
+    # data_envio = models.DateField(null=True, blank=True)
+    # data_alteracao = models.DateField(null=True, blank=True)
+    # foi_avaliado = models.BooleanField(null=False, default=False)
+    eventos = forms.ModelMultipleChoiceField(label='Selecione o(s) evento(s):', queryset=Evento.objects.all(),
+                                             widget=Select2Multiple(select2attrs={'width': 'auto'}))
+    autores = forms.ModelMultipleChoiceField(label='Selecione o(s) autor(es):',
+                                             widget=Select2Multiple(select2attrs={'width': 'auto'}),
+                                             queryset=Autor.objects.all())
+
+    class Meta:
+        model = Projeto
+        fields = ['titulo', 'resumo', 'eventos', 'autores']

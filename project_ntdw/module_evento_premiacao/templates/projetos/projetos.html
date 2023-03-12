@@ -3,26 +3,42 @@
 {% block content %}
 
 {% if projetos|length >= 1 %}
+
 <table class="table table-hover" style="width: 50%; margin-left: auto; margin-right: auto; margin-top: 20px;">
     <tr>
-        <th>Nome</th>
-        <th>Ano</th>
-        <th>Descrição</th>
-        <th>Cronograma</th>
+        <th>Titulo</th>
+        <th>Autor(es)</th>
+        <th>Evento(s)</th>
+        <th>Data de envio</th>
+        <th>Ultima alteração</th>
+        <th>Resumo</th>
+        <th>Status</th>
     </tr>
-    {% for evento in eventos %}
+    {% for projeto in projetos %}
     <tr>
-        <td>{{ evento.nome }}</td>
-        <td>{{ evento.ano }}</td>
-        <td>{{ evento.descricao }}</td>
-        <td>{{ evento.cronograma_fk.data_inicio }} até {{ evento.cronograma_fk.data_final }}</td>
-        <td><a href="{% url 'evento_editar' evento.id %}">Editar</a></td>
-        <td><a id="link_deletar" href="{% url 'evento_delete' evento.id %}"
+        <td>{{ projeto.titulo }}</td>
+        <td>
+            {% for autor in projeto.autores.all %}
+                {{ autor.pessoa.nome }}<br />
+            {% endfor %}
+        </td>
+        <td>
+            {% for evento in projeto.eventos.all %}
+                {{ evento.nome }}, de {{ evento.cronograma_fk.data_inicio }}
+                até {{ evento.cronograma_fk.data_final }} <br /><br />
+            {% endfor %}
+        </td>
+        <td>{{ projeto.data_envio }}</td>
+        <td>{{ projeto.data_alteracao }}</td>
+        <td>{{ projeto.resumo }}</td>
+        <td>{% if projeto.foi_avaliado %} Avaliado {% else %} Não avaliado {% endif %}</td>
+        <td><a href="{% url 'projeto_editar' projeto.id %}">Editar</a></td>
+        <td><a id="link_deletar" href="{% url 'projeto_delete' projeto.id %}"
                onclick="return confirm('Certeza que deseja deletar esse registro?')">Deletar</a></td>
     </tr>
     {% endfor %}
 </table>
 {% else %}
-<h2>Não existe nenhum evento cadastrado, <a href="{% url 'evento_create' %}">adicionar.</a></h2>
+<h2>Não existe nenhum projeto cadastrado, <a href="{% url 'projeto_create' %}">adicionar.</a></h2>
 {% endif %}
 {% endblock %}

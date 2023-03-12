@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import include, path
 from .views import *
 
 urlpatterns = [
     path('', index, name='index'),
+    path("select2/", include("django_select2.urls")),
 
     path('cronogramas/', cronogramas, name='cronogramas'),
     path('cronograma_editar/<int:id>', cronograma_editar, name='cronograma_editar'),
@@ -23,5 +24,10 @@ urlpatterns = [
     path('avaliador_editar/<int:id>', avaliador_editar, name='avaliador_editar'),
     path('avaliador_delete/<int:id>', avaliador_delete, name='avaliador_delete'),
     path('avaliador_create/', avaliador_create, name='avaliador_create'),
+
+    path('projetos/', projetos, name='projetos'),
+    path('projeto_editar/<int:id>', projeto_editar, name='projeto_editar'),
+    path('projeto_delete/<int:id>', projeto_delete, name='projeto_delete'),
+    path('projeto_create/', projeto_create, name='projeto_create'),
 
 ]

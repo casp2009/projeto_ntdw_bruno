@@ -62,6 +62,7 @@ class Projeto(models.Model):
     titulo = models.CharField(max_length=200)
     resumo = models.CharField(max_length=500)
     data_envio = models.DateField(null=True, blank=True)
+    data_alteracao = models.DateField(null=True, blank=True)
     foi_avaliado = models.BooleanField(null=False, default=False)
     eventos = models.ManyToManyField(Evento)
     autores = models.ManyToManyField(Autor)

@@ -1,10 +1,11 @@
+from datetime import date
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
 from .forms import *
 
 
-# Create your views here.
+# --------------------- INDEX --------------------------------
 def index(request):
     context = {
         'autor_count': Autor.objects.all().count(),
@@ -214,7 +215,8 @@ def avaliador_create(request):
             messages.error(request, 'O formulário não é válido.')
         return redirect(autores)
     elif request.method == 'GET':
-        return render(request, 'avaliador/avaliador_create.html', {'form_pessoa': form_pessoa, 'form_avaliador': form_avaliador})
+        return render(request, 'avaliador/avaliador_create.html',
+                      {'form_pessoa': form_pessoa, 'form_avaliador': form_avaliador})
 
 
 def avaliador_delete(request, id):
@@ -265,3 +267,60 @@ def avaliador_editar(request, id):
             return render(request, 'avaliador/avaliador_update.html',
                           {'form_avaliador': form_avaliador, 'form_pessoa': form_pessoa,
                            'avaliador': avaliador})
+
+
+# ------------- PROJETOS ----------------------
+
+def projetos(request):
+    return render(request, 'projetos/projetos.html', {'projetos': Projeto.objects.all()})
+
+
+def projeto_create(request):
+    form = FormProjeto()
+    if request.method == 'POST':
+        form = FormProjeto(request.POST)
+        if form.is_valid():
+            projeto = form.save(commit=False)
+            projeto.foi_avaliado = False
+            projeto.data_envio = date.today()
+            projeto.data_alteracao = date.today()
+            projeto.save()
+            projeto.autores.set(form.cleaned_data['autores'])
+            projeto.eventos.set(form.cleaned_data['eventos'])
+            messages.success(request, 'O projeto foi criado com sucesso.')
+        else:
+            messages.error(request, 'O formulário não é válido.')
+        return redirect(projetos)
+    elif request.method == 'GET':
+        return render(request, 'projetos/projeto_create.html', {'form': form})
+
+
+def projeto_delete(request, id):
+    projeto = Projeto.objects.get(id=id)
+    projeto.delete()
+    messages.success(request, 'O projeto foi deletado.')
+    return redirect(projetos)
+
+
+def projeto_editar(request, id):
+    projeto = Projeto.objects.get(id=id)
+    form = FormProjeto(instance=projeto)
+
+    if request.method == 'GET':
+        return render(request, 'projetos/projeto_update.html',
+                      {'form': form, 'projeto': projeto})
+    elif request.method == 'POST':
+        form = FormProjeto(request.POST, instance=projeto)
+        if form.is_valid():
+            projeto = form.save(commit=False)
+            projeto.titulo = form.cleaned_data['titulo']
+            projeto.resumo = form.cleaned_data['resumo']
+            projeto.data_alteracao = date.today()
+            projeto.autores.set(form.cleaned_data['autores'])
+            projeto.eventos.set(form.cleaned_data['eventos'])
+            projeto.save()
+            messages.success(request, 'O projeto foi alterado com sucesso.')
+            return redirect(projetos)
+        else:
+            messages.error(request, 'O formulário é inválido.')
+            return render(request, 'projeto/projeto_update.html', {'form': form, 'projeto': projeto})

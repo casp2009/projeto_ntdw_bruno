@@ -29,6 +29,9 @@
     {% load static %}
     <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
+    {% load static %}
+    <link href="{% static 'easy_select2/vendor/select2/select2.min.css' %}" rel="stylesheet">
+
     {# Load the tag library #}
     {% load bootstrap5 %}
 
@@ -66,8 +69,8 @@
                 </li>
                 <li class="dropdown"><a href="#"><span>Projetos</span></a>
                     <ul>
-                        <li><a href="#">Adicionar Projeto</a></li>
-                        <li><a href="#">Listar Projetos</a></li>
+                        <li><a href="{% url 'projeto_create' %}">Adicionar Projeto</a></li>
+                        <li><a href="{% url 'projetos' %}">Listar Projetos</a></li>
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#"><span>Autores</span></a>
@@ -114,6 +117,9 @@
 <!-- Template Main JS File -->
 {% load static %}
 <script src="{% static 'assets/js/main.js' %}"></script>
+
+{% load static %}
+<script src="{% static 'easy_select2/vendor/select2/select2.min.js' %}"></script>
 
 </body>
 </html>
