@@ -47,7 +47,7 @@ class FormAutor(forms.ModelForm):
 
 class FormAvaliador(forms.ModelForm):
     numero_registro_avaliador = forms.CharField(label='Nº de registro avaliador:',
-                                                widget=forms.Textarea(attrs={"rows": "5", 'placeholder': ''}))
+                                                widget=forms.TextInput(attrs={'placeholder': ''}))
 
     class Meta:
         model = Avaliador
