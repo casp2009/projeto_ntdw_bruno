@@ -24,7 +24,7 @@
                     <td>
                     {% for projeto in projetos %}
                         {% if projeto.autor.nome == autor.nome %}
-                            {{ projeto.titulo }}<br />
+                            <span>Titulo: {{ projeto.titulo }}</span><br />
                         {% endif %}
                     {% endfor %}
                     </td>

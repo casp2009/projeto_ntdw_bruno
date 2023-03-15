@@ -145,8 +145,17 @@ def autor_create(request):
 
 
 def autores_projetos(request):
+    autores = Autor.objects.all()
+    projetos = Projeto.objects.all()
+    autoresFinal = []
+    for autor in autores:
+        for projeto in projetos:
+            for at2 in projeto.autores.all():
+                if autor.pessoa.nome == at2.pessoa.nome:
+                    autoresFinal.append(autor)
+    lista_sem_duplicados = list(set(autoresFinal))
     return render(request, 'autor/autores_projetos.html', {'projetos': Projeto.objects.all(),
-                                                           'autores': Autor.objects.all()})
+                                                           'autores': lista_sem_duplicados})
 
 
 def autor_delete(request, id):
