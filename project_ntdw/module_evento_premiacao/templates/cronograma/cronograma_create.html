@@ -11,17 +11,13 @@
 {% bootstrap_messages %}
 
 {% block title %}
-    {% if cronograma.id != null %}
-        <title>Update cronograma</title>
-    {% else %}
-        <title>Criar cronograma</title>
-    {% endif %}
+        <title>Adicionar Cronograma</title>
 {% endblock %}
 
 {% block content %}
+<h1>Novo Cronograma</h1>
 <div class="container_form">
     <form action="{% url 'cronograma_create' %}" method="POST">
-        <h1>Adicionar um cronograma</h1>
         {% csrf_token %}
 
         {% bootstrap_form form %}

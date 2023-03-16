@@ -91,7 +91,7 @@ class Avaliador(models.Model):
 class Projeto_Avaliado(models.Model):
     id = models.AutoField(primary_key=True)
     projeto = models.OneToOneField(Projeto, on_delete=models.CASCADE)
-    avaliador = models.OneToOneField(Avaliador, on_delete=models.CASCADE)
+    avaliador = models.ManyToManyField(Avaliador)
     parecer = models.CharField(max_length=300, null=False)
     nota = models.DecimalField(max_digits=2, decimal_places=False)
     data_avaliacao = models.DateTimeField(null=False)

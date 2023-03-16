@@ -69,3 +69,20 @@ class FormProjeto(forms.ModelForm):
     class Meta:
         model = Projeto
         fields = ['titulo', 'resumo', 'eventos', 'autores']
+
+
+class FormProjetoAvaliado(forms.ModelForm):
+
+    projeto = forms.ModelChoiceField(label='Selecione o projeto:',
+                                             widget=Select2(select2attrs={'width': 'auto'}),
+                                     queryset=Projeto.objects.all())
+    avaliador = forms.ModelChoiceField(label='Selecione o avaliador:',
+                                             widget=Select2(select2attrs={'width': 'auto', }),
+                                             queryset=Avaliador.objects.all())
+    parecer = forms.CharField(label='Parecer:', widget=forms.Textarea(attrs={"rows": "5", 'placeholder': ''}))
+    nota = forms.DecimalField()
+    #data_avaliacao = models.DateTimeField(null=False)
+
+    class Meta:
+        model = Projeto_Avaliado
+        fields = ['projeto', 'avaliador', 'parecer', 'nota']

@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import *
@@ -343,3 +343,30 @@ def projeto_editar(request, id):
         else:
             messages.error(request, 'O formulário é inválido.')
             return render(request, 'projeto/projeto_update.html', {'form': form, 'projeto': projeto})
+
+
+def projeto_avaliar(request, id):
+    projeto = Projeto.objects.get(id=id)
+    form = FormProjetoAvaliado()
+    form.fields['projeto'].initial = projeto
+    if request.method == 'POST':
+        form = FormProjetoAvaliado(request.POST)
+        if form.is_valid():
+            projeto_avaliado = form.save(commit=False)
+            projeto_avaliado.data_avaliacao = datetime.now()
+
+            projeto_escolhido = form.cleaned_data['projeto']
+            projeto_escolhido.foi_avaliado = True
+
+            projeto_escolhido.save()
+            projeto_avaliado.save()
+            messages.success(request, 'O projeto foi avaliado com sucesso.')
+        else:
+            messages.error(request, 'O formulário não é válido.')
+        return redirect(projetos_avaliados)
+    elif request.method == 'GET':
+        return render(request, 'projetos/projeto_avaliar.html', {'form': form, 'projeto': projeto})
+
+
+def projetos_avaliados(request):
+    return render(request, 'projetos/projetos_avaliados.html', {'avaliacoes': Projeto_Avaliado.objects.all()})

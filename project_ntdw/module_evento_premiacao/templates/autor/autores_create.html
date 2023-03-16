@@ -15,9 +15,9 @@
 {% endblock %}
 
 {% block content %}
+<h1> Novo Autor </h1>
 <div class="container_form">
     <form action="{% url 'autor_create' %}" method="POST">
-        <h1>Criar um autor</h1>
         {% csrf_token %}
 
         {% bootstrap_form form_pessoa %}

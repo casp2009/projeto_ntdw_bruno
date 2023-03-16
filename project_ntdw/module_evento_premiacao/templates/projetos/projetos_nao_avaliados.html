@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if projetos|length >= 1 %}
-
+<h1>Projetos não avaliados</h1>
 <table class="table table-hover" style="width: 60%; margin-left: auto; margin-right: auto; margin-top: 20px;">
     <tr>
         <th>Titulo</th>
@@ -32,7 +32,7 @@
         <td>{{ projeto.data_alteracao }}</td>
         <td>{{ projeto.resumo }}</td>
         <td>{% if projeto.foi_avaliado %} Avaliado {% else %} Não avaliado {% endif %}</td>
-        <td><a href="#">Avaliar</a></td>
+        <td><a href="{% url 'projeto_avaliar' projeto.id %}">Avaliar</a></td>
     </tr>
     {% endfor %}
 </table>

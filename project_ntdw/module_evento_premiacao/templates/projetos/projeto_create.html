@@ -12,10 +12,9 @@
 
 {% block title %}<title>Criar projeto</title>{% endblock %}
 {% block content %}
-
+<h1>Novo Projeto</h1>
 <div class="container_form">
     <form action="{% url 'projeto_create' %}" method="POST">
-        <h1>Adicionar um projeto</h1>
         {% csrf_token %}
 
         {% bootstrap_form form %}

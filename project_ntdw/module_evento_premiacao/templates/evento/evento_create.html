@@ -11,11 +11,11 @@
 {% bootstrap_messages %}
 
 {% block title %}<title>Criar evento</title>{% endblock %}
-{% block content %}
 
+{% block content %}
+<h1>Novo Evento</h1>
 <div class="container_form">
     <form action="{% url 'evento_create' %}" method="POST">
-        <h1>Adicionar um evento</h1>
         {% csrf_token %}
 
         {% bootstrap_form form %}

@@ -1,0 +1,45 @@
+{% extends "generic_full.html" %}
+{% block title %}<title>Projetos Avaliados</title>{% endblock %}
+{% block content %}
+
+{% if avaliacoes|length >= 1 %}
+<h1>Projetos Avaliados</h1>
+<table class="table table-hover" style="width: 70%; margin-left: auto; margin-right: auto; margin-top: 20px;">
+    <tr>
+        <th>Titulo</th>
+        <th>Autor(es)</th>
+        <th>Avaliador</th>
+        <th>Evento(s)</th>
+        <th>Data de envio</th>
+        <th>Resumo</th>
+        <th>Avaliação</th>
+    </tr>
+    {% for avaliacao in avaliacoes %}
+    <tr>
+        <td>{{ avaliacao.projeto.titulo }}</td>
+        <td>
+            {% for autor in avaliacao.projeto.autores.all %}
+                {{ autor.pessoa.nome }}<br />
+            {% endfor %}
+        </td>
+        <td>{{ avaliacao.avaliador.pessoa.nome }}</td>
+        <td>
+            {% for evento in avaliacao.projeto.eventos.all %}
+                {{ evento.nome }}, de {{ evento.cronograma_fk.data_inicio }}
+                até {{ evento.cronograma_fk.data_final }} <br /><br />
+            {% endfor %}
+        </td>
+        <td>{{ avaliacao.projeto.data_envio }}</td>
+        <td>{{ avaliacao.projeto.resumo }}</td>
+        <td>
+            Nota: {{ avaliacao.nota }}<br />
+            Parecer: {{ avaliacao.parecer }}<br />
+            Data da avaliação: {{ avaliacao.data_avaliacao }}<br />
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h2>Não existe nenhum projeto avaliado, <a href="{% url 'projetos_nao_avaliados' %}">avaliar.</a></h2>
+{% endif %}
+{% endblock %}

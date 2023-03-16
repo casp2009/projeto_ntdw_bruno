@@ -30,5 +30,7 @@ urlpatterns = [
     path('projeto_editar/<int:id>', projeto_editar, name='projeto_editar'),
     path('projeto_delete/<int:id>', projeto_delete, name='projeto_delete'),
     path('projeto_create/', projeto_create, name='projeto_create'),
+    path('projeto_avaliar/<int:id>', projeto_avaliar, name='projeto_avaliar'),
     path('projetos_nao_avaliados/', projetos_nao_avaliados, name='projetos_nao_avaliados'),
+    path('projetos_avaliados/', projetos_avaliados, name='projetos_avaliados'),
 ]
