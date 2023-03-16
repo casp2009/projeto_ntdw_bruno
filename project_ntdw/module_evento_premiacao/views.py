@@ -353,11 +353,10 @@ def projeto_avaliar(request, id):
         form = FormProjetoAvaliado(request.POST)
         if form.is_valid():
             projeto_avaliado = form.save(commit=False)
+            projeto_avaliado.avaliador = form.cleaned_data['avaliador']
             projeto_avaliado.data_avaliacao = datetime.now()
-
             projeto_escolhido = form.cleaned_data['projeto']
             projeto_escolhido.foi_avaliado = True
-
             projeto_escolhido.save()
             projeto_avaliado.save()
             messages.success(request, 'O projeto foi avaliado com sucesso.')
@@ -370,3 +369,8 @@ def projeto_avaliar(request, id):
 
 def projetos_avaliados(request):
     return render(request, 'projetos/projetos_avaliados.html', {'avaliacoes': Projeto_Avaliado.objects.all()})
+
+
+def projetos_rank(request):
+    return render(request, 'projetos/projetos_rank.html',
+                  {'avaliacoes': Projeto_Avaliado.objects.all().order_by('-nota')})

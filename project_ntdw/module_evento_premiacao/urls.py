@@ -33,4 +33,5 @@ urlpatterns = [
     path('projeto_avaliar/<int:id>', projeto_avaliar, name='projeto_avaliar'),
     path('projetos_nao_avaliados/', projetos_nao_avaliados, name='projetos_nao_avaliados'),
     path('projetos_avaliados/', projetos_avaliados, name='projetos_avaliados'),
+    path('projetos_rank/', projetos_rank, name='projetos_rank'),
 ]
