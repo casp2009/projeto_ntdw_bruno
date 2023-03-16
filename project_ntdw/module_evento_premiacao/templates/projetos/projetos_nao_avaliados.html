@@ -32,7 +32,7 @@
         <td>{{ projeto.data_alteracao }}</td>
         <td>{{ projeto.resumo }}</td>
         <td>{% if projeto.foi_avaliado %} Avaliado {% else %} Não avaliado {% endif %}</td>
-        <td><a href="{% url 'projeto_avaliar' projeto.id %}">Avaliar</a></td>
+        <td><a href="{% url 'projeto_avaliar' projeto.id %}" class="btn btn-outline-secondary">Avaliar</a></td>
     </tr>
     {% endfor %}
 </table>

@@ -32,7 +32,7 @@
         <td>{{ projeto.data_alteracao }}</td>
         <td>{{ projeto.resumo }}</td>
         <td>{% if projeto.foi_avaliado %} Avaliado {% else %} Não avaliado {% endif %}</td>
-        <td><a href="{% url 'projeto_editar' projeto.id %}">Editar</a></td>
+        <td><a href="{% url 'projeto_editar' projeto.id %}" class="btn btn-outline-warning">Editar</a></td>
         <td><a href="{% url 'projeto_delete' projeto.id %}"
                onclick="return confirm('Certeza que deseja deletar esse registro?')" class="btn btn-outline-danger">Deletar</a></td>
     </tr>
