@@ -33,8 +33,8 @@
         <td>{{ projeto.resumo }}</td>
         <td>{% if projeto.foi_avaliado %} Avaliado {% else %} Não avaliado {% endif %}</td>
         <td><a href="{% url 'projeto_editar' projeto.id %}">Editar</a></td>
-        <td><a id="link_deletar" href="{% url 'projeto_delete' projeto.id %}"
-               onclick="return confirm('Certeza que deseja deletar esse registro?')">Deletar</a></td>
+        <td><a href="{% url 'projeto_delete' projeto.id %}"
+               onclick="return confirm('Certeza que deseja deletar esse registro?')" class="btn btn-outline-danger">Deletar</a></td>
     </tr>
     {% endfor %}
 </table>

@@ -21,8 +21,8 @@
                     <td>{{ autor.pessoa.registro_geral }}</td>
                     <td>{{ autor.pessoa.formacao }}</td>
                     <td>{{ autor.biografia }}</td>
-                    <td><a href="{% url 'autor_editar' autor.id %}">Editar</a></td>
-                    <td><a id="link_deletar" href="{% url 'autor_delete' autor.id %}"
+                    <td><a href="{% url 'autor_editar' autor.id %}" class="btn btn-outline-warning">Editar</a></td>
+                    <td><a class="btn btn-outline-danger" href="{% url 'autor_delete' autor.id %}"
                            onclick="return confirm('Certeza que deseja deletar esse registro?')">Deletar</a></td>
                 </tr>
             {% endfor %}
