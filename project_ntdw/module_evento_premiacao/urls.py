@@ -1,4 +1,5 @@
 from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 from .views import *
 
 urlpatterns = [
@@ -35,3 +36,9 @@ urlpatterns = [
     path('projetos_avaliados/', projetos_avaliados, name='projetos_avaliados'),
     path('projetos_rank/', projetos_rank, name='projetos_rank'),
 ]
+
+router = DefaultRouter(trailing_slash=False)
+router.register(r'api/v1/cronogramas', CronogramaViewSetApi)
+router.register(r'api/v1/eventos', EventoViewSetApi)
+
+urlpatterns+=router.urls

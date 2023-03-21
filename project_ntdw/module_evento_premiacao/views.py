@@ -4,6 +4,23 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 
+from .serializer import CronogramaSerializer, EventoSerializer
+from rest_framework import viewsets, permissions
+
+# --------------------- APIs -----------------------
+
+# Cronogramas
+class CronogramaViewSetApi(viewsets.ModelViewSet):
+  queryset = Cronograma.objects.all()
+  serializer_class = CronogramaSerializer
+  permission_classes = [permissions.IsAuthenticated]
+
+# Evento
+class EventoViewSetApi(viewsets.ModelViewSet):
+    queryset = Evento.objects.all()
+    serializer_class = EventoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pass
 
 # --------------------- INDEX --------------------------------
 def index(request):

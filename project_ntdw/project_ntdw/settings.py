@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'module_evento_premiacao',
     'easy_select2',
+    'rest_framework',
     'bootstrap5',
 ]
 

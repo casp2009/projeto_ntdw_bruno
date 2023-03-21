@@ -23,5 +23,6 @@ from django.conf import settings
 urlpatterns = [
     path('', RedirectView.as_view(url='/module_evento_premiacao/', permanent=True)),
     path('module_evento_premiacao/', include('module_evento_premiacao.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
