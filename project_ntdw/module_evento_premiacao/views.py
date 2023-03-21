@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 
-from .serializer import CronogramaSerializer, EventoSerializer
+from .serializer import *
 from rest_framework import viewsets, permissions
 
 # --------------------- APIs -----------------------
@@ -20,7 +20,35 @@ class EventoViewSetApi(viewsets.ModelViewSet):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
     permission_classes = [permissions.IsAuthenticated]
-    pass
+
+# Pessoa
+class PessoaViewSetApi(viewsets.ModelViewSet):
+    queryset = Pessoa.objects.all()
+    serializer_class = PessoaSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+# Autor
+class AutorViewSetApi(viewsets.ModelViewSet):
+    queryset = Autor.objects.all()
+    serializer_class = AutorSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+# Projeto
+class ProjetoViewSetApi(viewsets.ModelViewSet):
+    queryset = Projeto.objects.all()
+    serializer_class = ProjetoSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+# Avaliador
+class AvaliadorViewSetApi(viewsets.ModelViewSet):
+    queryset = Avaliador.objects.all()
+    serializer_class = AvaliadorSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+class ProjetoAvaliadoViewSetApi(viewsets.ModelViewSet):
+    queryset = Projeto_Avaliado.objects.all()
+    serializer_class = ProjetoSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 # --------------------- INDEX --------------------------------
 def index(request):

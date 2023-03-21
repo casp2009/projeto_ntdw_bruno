@@ -40,5 +40,10 @@ urlpatterns = [
 router = DefaultRouter(trailing_slash=False)
 router.register(r'api/v1/cronogramas', CronogramaViewSetApi)
 router.register(r'api/v1/eventos', EventoViewSetApi)
+router.register(r'api/v1/pessoas', PessoaViewSetApi)
+router.register(r'api/v1/autores', AutorViewSetApi)
+router.register(r'api/v1/avaliadores', AutorViewSetApi)
+router.register(r'api/v1/projetos', ProjetoViewSetApi)
+router.register(r'api/v1/projeto_avaliado', ProjetoAvaliadoViewSetApi)
 
 urlpatterns+=router.urls
