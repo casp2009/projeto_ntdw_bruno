@@ -2,9 +2,21 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from .views import *
 
+
+router = DefaultRouter(trailing_slash=False)
+router.register(r'cronogramas', CronogramaViewSetApi)
+router.register(r'eventos', EventoViewSetApi)
+router.register(r'pessoas', PessoaViewSetApi)
+router.register(r'autores', AutorViewSetApi)
+router.register(r'avaliadores', AutorViewSetApi)
+router.register(r'projetos', ProjetoViewSetApi)
+router.register(r'projeto_avaliado', ProjetoAvaliadoViewSetApi)
+
+
 urlpatterns = [
     path('', index, name='index'),
     path("select2/", include("django_select2.urls")),
+    path('apis/v1/', include(router.urls)),
 
     path('cronogramas/', cronogramas, name='cronogramas'),
     path('cronograma_editar/<int:id>', cronograma_editar, name='cronograma_editar'),
@@ -37,13 +49,4 @@ urlpatterns = [
     path('projetos_rank/', projetos_rank, name='projetos_rank'),
 ]
 
-router = DefaultRouter(trailing_slash=False)
-router.register(r'api/v1/cronogramas', CronogramaViewSetApi)
-router.register(r'api/v1/eventos', EventoViewSetApi)
-router.register(r'api/v1/pessoas', PessoaViewSetApi)
-router.register(r'api/v1/autores', AutorViewSetApi)
-router.register(r'api/v1/avaliadores', AutorViewSetApi)
-router.register(r'api/v1/projetos', ProjetoViewSetApi)
-router.register(r'api/v1/projeto_avaliado', ProjetoAvaliadoViewSetApi)
-
-urlpatterns+=router.urls
+#urlpatterns+=router.urls
