@@ -1,11 +1,24 @@
 from datetime import date, datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse
 from .models import *
 from .forms import *
-
+import requests
 from .serializer import *
 from rest_framework import viewsets, permissions
+
+
+#---------------------- Teste API ---------------------
+
+# Create your views here.
+def users(request):    #pull data from third party rest api
+    response = requests.get('http://127.0.0.1:8000/module_evento_premiacao/apis/v1/pessoas')    #convert reponse data into json
+    users = response.json()
+    #print(users)
+    return render(request, "users.html", {'users': users})
+
+    pass
 
 # --------------------- APIs -----------------------
 
@@ -13,42 +26,42 @@ from rest_framework import viewsets, permissions
 class CronogramaViewSetApi(viewsets.ModelViewSet):
   queryset = Cronograma.objects.all()
   serializer_class = CronogramaSerializer
-  permission_classes = [permissions.IsAuthenticated]
+  permission_classes = []
 
 # Evento
 class EventoViewSetApi(viewsets.ModelViewSet):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
 
 # Pessoa
 class PessoaViewSetApi(viewsets.ModelViewSet):
     queryset = Pessoa.objects.all()
     serializer_class = PessoaSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
 
 # Autor
 class AutorViewSetApi(viewsets.ModelViewSet):
     queryset = Autor.objects.all()
     serializer_class = AutorSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
 
 # Projeto
 class ProjetoViewSetApi(viewsets.ModelViewSet):
     queryset = Projeto.objects.all()
     serializer_class = ProjetoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
 
 # Avaliador
 class AvaliadorViewSetApi(viewsets.ModelViewSet):
     queryset = Avaliador.objects.all()
     serializer_class = AvaliadorSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
 
 class ProjetoAvaliadoViewSetApi(viewsets.ModelViewSet):
     queryset = Projeto_Avaliado.objects.all()
     serializer_class = ProjetoSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = []
 
 # --------------------- INDEX --------------------------------
 def index(request):

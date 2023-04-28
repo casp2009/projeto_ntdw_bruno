@@ -17,6 +17,7 @@ urlpatterns = [
     path('', index, name='index'),
     path("select2/", include("django_select2.urls")),
     path('apis/v1/', include(router.urls)),
+    path('users/', users, name = 'users'),
 
     path('cronogramas/', cronogramas, name='cronogramas'),
     path('cronograma_editar/<int:id>', cronograma_editar, name='cronograma_editar'),
