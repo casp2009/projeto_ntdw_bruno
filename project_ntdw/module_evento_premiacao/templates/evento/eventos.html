@@ -16,7 +16,11 @@
         <td>{{ evento.nome }}</td>
         <td>{{ evento.ano }}</td>
         <td>{{ evento.descricao }}</td>
-        <td>{{ evento.cronograma_fk.data_inicio }} até {{ evento.cronograma_fk.data_final }}</td>
+        {% for cronograma in cronogramas %}
+            {% if cronograma.id == evento.cronograma_fk %}
+                <td>{{ cronograma.data_inicio }} até {{ cronograma.data_final }}</td>
+            {% endif %}
+        {% endfor %}
         <td><a href="{% url 'evento_editar' evento.id %}" class="btn btn-outline-warning">Editar</a></td>
         <td><a href="{% url 'evento_delete' evento.id %}"
                onclick="return confirm('Certeza que deseja deletar esse registro?')"

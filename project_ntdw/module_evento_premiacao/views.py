@@ -2,17 +2,9 @@ from datetime import date, datetime
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import *
-import requests
 from .serializer import *
 from rest_framework import viewsets
-
-# ---------------------- Teste API ---------------------
-
-# Create your views here.
-def users(request):  # pull data from third party rest api
-    response = requests.get(
-        'http://127.0.0.1:8000/module_evento_premiacao/apis/v1/pessoas')  # convert reponse data into json
-    return render(request, "users.html", {'users': response.json()})
+import coreapi
 
 
 # --------------------- APIs -----------------------
@@ -131,7 +123,16 @@ def cronograma_create(request):
 # -------------------- EVENTOS -----------------
 
 def eventos(request):
-    return render(request, 'evento/eventos.html', {'eventos': Evento.objects.all()})
+    # Initialize a client & load the schema document
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with the API endpoint
+    action1 = ["eventos", "list"]
+    action2 = ["cronogramas", "list"]
+    result_eventos = client.action(schema, action1)
+    result_crono = client.action(schema, action2)
+    return render(request, 'evento/eventos.html', {'eventos': result_eventos, 'cronogramas':result_crono})
 
 
 def evento_delete(request, id):
@@ -169,8 +170,19 @@ def evento_create(request):
     if request.method == 'POST':
         form = FormEvento(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'O evento foi criado com sucesso.')
+
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+            # Interact with the API endpoint
+            action = ["eventos", "create"]
+            params = {
+                "nome": form.cleaned_data['nome'],
+                "descricao": form.cleaned_data['descricao'],
+                "ano": form.cleaned_data['ano'],
+                "cronograma_fk": form.cleaned_data['cronograma_fk'].id,
+            }
+            client.action(schema, action, params=params)
         else:
             messages.error(request, 'O formulário não é válido.')
         return redirect(eventos)

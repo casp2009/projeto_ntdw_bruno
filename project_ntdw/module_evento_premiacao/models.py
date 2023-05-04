@@ -12,8 +12,7 @@ class Cronograma(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.descricao}, do dia {self.data_inicio},' \
-               f' até o dia {self.data_final}.'
+        return f'{self.id}'
 
 
 class Evento(models.Model):
@@ -21,8 +20,8 @@ class Evento(models.Model):
     nome = models.CharField(max_length=200)
     descricao = models.CharField(max_length=200)
     ano = models.IntegerField()
-    cronograma = Cronograma()
-    #cronograma_fk = models.ForeignKey('Cronograma', on_delete=models.SET_NULL, null=True)
+    #cronograma = Cronograma()
+    cronograma_fk = models.ForeignKey('Cronograma', on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ['id']
