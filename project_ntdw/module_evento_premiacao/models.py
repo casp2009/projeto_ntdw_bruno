@@ -6,6 +6,7 @@ class Cronograma(models.Model):
     data_inicio = models.DateField(null=True, blank=True)
     data_final = models.DateField(null=True, blank=True)
     descricao = models.CharField(max_length=300, null=True)
+
     class Meta:
         ordering = ['id']
 
@@ -20,7 +21,8 @@ class Evento(models.Model):
     nome = models.CharField(max_length=200)
     descricao = models.CharField(max_length=200)
     ano = models.IntegerField()
-    cronograma_fk = models.ForeignKey('Cronograma', on_delete=models.SET_NULL, null=True)
+    cronograma = Cronograma()
+    #cronograma_fk = models.ForeignKey('Cronograma', on_delete=models.SET_NULL, null=True)
 
     class Meta:
         ordering = ['id']

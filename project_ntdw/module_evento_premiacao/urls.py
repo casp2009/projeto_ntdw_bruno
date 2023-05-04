@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from .views import *
-
+from rest_framework.documentation import include_docs_urls
 
 router = DefaultRouter(trailing_slash=False)
 router.register(r'cronogramas', CronogramaViewSetApi)
@@ -17,7 +17,7 @@ urlpatterns = [
     path('', index, name='index'),
     path("select2/", include("django_select2.urls")),
     path('apis/v1/', include(router.urls)),
-    path('users/', users, name = 'users'),
+    path('docs/', include_docs_urls(title='Event APIs')),
 
     path('cronogramas/', cronogramas, name='cronogramas'),
     path('cronograma_editar/<int:id>', cronograma_editar, name='cronograma_editar'),
@@ -49,5 +49,3 @@ urlpatterns = [
     path('projetos_avaliados/', projetos_avaliados, name='projetos_avaliados'),
     path('projetos_rank/', projetos_rank, name='projetos_rank'),
 ]
-
-#urlpatterns+=router.urls
