@@ -6,7 +6,6 @@ from .serializer import *
 from rest_framework import viewsets
 import coreapi
 
-
 # --------------------- APIs -----------------------
 
 # Cronogramas
@@ -136,8 +135,15 @@ def eventos(request):
 
 
 def evento_delete(request, id):
-    evento = Evento.objects.get(id=id)
-    evento.delete()
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with the API endpoint
+    action = ["eventos", "delete"]
+    params = {
+        "id": id,
+    }
+    result = client.action(schema, action, params=params)
     messages.success(request, 'O registro foi deletado.')
     return redirect(eventos)
 
@@ -152,12 +158,18 @@ def evento_editar(request, id):
     elif request.method == 'POST':
         form = FormEvento(request.POST, instance=evento)
         if form.is_valid():
-            evento = form.save(commit=False)
-            evento.nome = form.cleaned_data['nome']
-            evento.descricao = form.cleaned_data['descricao']
-            evento.ano = form.cleaned_data['ano']
-            evento.cronograma_fk = form.cleaned_data['cronograma_fk']
-            evento.save()
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+            # Interact with the API endpoint
+            action = ["eventos", "partial_update"]
+            params = {
+                "id": id,
+                "nome": form.cleaned_data['nome'],
+                "descricao": form.cleaned_data['descricao'],
+                "ano": form.cleaned_data['ano'],
+                "cronograma_fk": form.cleaned_data['cronograma_fk'].id,
+            }
+            result = client.action(schema, action, params=params)
             messages.success(request, 'O cronograma foi alterado com sucesso.')
             return redirect(eventos)
         else:
@@ -170,7 +182,6 @@ def evento_create(request):
     if request.method == 'POST':
         form = FormEvento(request.POST)
         if form.is_valid():
-
             client = coreapi.Client()
             schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
 
