@@ -18,14 +18,25 @@
     <tr>
         <td>{{ projeto.titulo }}</td>
         <td>
-            {% for autor in projeto.autores.all %}
-                {{ autor.pessoa.nome }}<br />
+            {% for autor in autores %}
+                {% for aut in projeto.autores %}
+                    {% if aut == autor.id %}
+                        {% for pessoa in pessoas %}
+                            {% if pessoa.id == autor.pessoa %}
+                                {{ pessoa.nome }}<br />
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </td>
         <td>
-            {% for evento in projeto.eventos.all %}
-                {{ evento.nome }}, de {{ evento.cronograma_fk.data_inicio }}
-                até {{ evento.cronograma_fk.data_final }} <br /><br />
+            {% for evento in eventos %}
+                {% for even in projeto.eventos %}
+                    {% if even == evento.id %}
+                        {{ evento.nome }}<br /><br />
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </td>
         <td>{{ projeto.data_envio }}</td>

@@ -389,11 +389,9 @@ def avaliadores(request):
     # Interact with the API endpoint
     action_avaliadores = ["avaliadores", "list"]
     result_avaliadores = client.action(schema, action_avaliadores)
-    print(result_avaliadores)
 
     action_pessoas = ["pessoas", "list"]
     result_pessoas = client.action(schema, action_pessoas)
-    print(result_pessoas)
     return render(request, 'avaliador/avaliadores.html', {'avaliadores': result_avaliadores, 'pessoas':result_pessoas})
 
 
@@ -512,7 +510,24 @@ def avaliador_editar(request, id):
 # ------------- PROJETOS ----------------------
 
 def projetos(request):
-    return render(request, 'projetos/projetos.html', {'projetos': Projeto.objects.all()})
+    # Initialize a client & load the schema document
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with the API endpoint
+    action_projetos = ["projetos", "list"]
+    result_projetos = client.action(schema, action_projetos)
+
+    action_autores = ["autores", "list"]
+    result_autores = client.action(schema, action_autores)
+
+    action_eventos = ["eventos", "list"]
+    result_eventos = client.action(schema, action_eventos)
+
+    action_pessoas = ["pessoas", "list"]
+    result_pessoas = client.action(schema, action_pessoas)
+    return render(request, 'projetos/projetos.html', {'projetos': result_projetos, 'autores': result_autores, 'eventos': result_eventos,
+                                                      'pessoas': result_pessoas})
 
 
 def projetos_nao_avaliados(request):
