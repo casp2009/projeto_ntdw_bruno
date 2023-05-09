@@ -421,7 +421,7 @@ def avaliador_create(request):
 
             action_avaliador = ["avaliadores", "create"]
             params = {
-                "biografia": form_avaliador.cleaned_data['numero_registro_avaliador'],
+                "numero_registro": form_avaliador.cleaned_data['numero_registro'],
                 "pessoa": result_pessoa['id'],
             }
             client.action(schema, action_avaliador, params=params)

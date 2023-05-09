@@ -46,12 +46,12 @@ class FormAutor(forms.ModelForm):
 
 
 class FormAvaliador(forms.ModelForm):
-    numero_registro_avaliador = forms.CharField(label='Nº de registro avaliador:',
+    numero_registro = forms.CharField(label='Nº de registro avaliador:',
                                                 widget=forms.TextInput(attrs={'placeholder': ''}))
 
     class Meta:
         model = Avaliador
-        fields = ['numero_registro_avaliador']
+        fields = ['numero_registro']
 
 
 class FormProjeto(forms.ModelForm):

@@ -8,7 +8,7 @@ router.register(r'cronogramas', CronogramaViewSetApi)
 router.register(r'eventos', EventoViewSetApi)
 router.register(r'pessoas', PessoaViewSetApi)
 router.register(r'autores', AutorViewSetApi)
-router.register(r'avaliadores', AutorViewSetApi)
+router.register(r'avaliadores', AvaliadorViewSetApi)
 router.register(r'projetos', ProjetoViewSetApi)
 router.register(r'projeto_avaliado', ProjetoAvaliadoViewSetApi)
 

@@ -88,7 +88,7 @@ class Projeto(models.Model):
 class Avaliador(models.Model):
     id = models.AutoField(primary_key=True)
     pessoa = models.OneToOneField(Pessoa, on_delete=models.CASCADE, default=None, null=True)
-    numero_registro_avaliador = models.CharField(max_length=50, null=False)
+    numero_registro = models.CharField(max_length=50, null=False)
 
     class Meta:
         ordering = ['id']

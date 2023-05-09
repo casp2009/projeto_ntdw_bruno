@@ -22,7 +22,7 @@
                             <td>{{ pessoa.telefone }}</td>
                             <td>{{ pessoa.registro_geral }}</td>
                             <td>{{ pessoa.formacao }}</td>
-                            <td>{{ avaliador.biografia }}</td>
+                            <td>{{ avaliador.numero_registro }}</td>
                             <td><a href="{% url 'avaliador_editar' avaliador.id %}" class="btn btn-outline-warning">Editar</a></td>
                             <td><a href="{% url 'avaliador_delete' avaliador.id %}"
                                    onclick="return confirm('Certeza que deseja deletar esse registro?')"
