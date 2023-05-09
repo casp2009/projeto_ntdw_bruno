@@ -477,17 +477,28 @@ def avaliador_editar(request, id):
         form_pessoa = FormPessoa(request.POST, instance=pessoa)
 
         if form_avaliador.is_valid() and form_pessoa.is_valid():
-            pessoa = form_pessoa.save(commit=False)
-            pessoa.nome = form_pessoa.cleaned_data['nome']
-            pessoa.endereco = form_pessoa.cleaned_data['endereco']
-            pessoa.telefone = form_pessoa.cleaned_data['telefone']
-            pessoa.registro_geral = form_pessoa.cleaned_data['registro_geral']
-            pessoa.formacao = form_pessoa.cleaned_data['formacao']
-            pessoa.save()
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
 
-            avaliador = form_avaliador.save(commit=False)
-            avaliador.numero_registro_avaliador = form_avaliador.cleaned_data['numero_registro_avaliador']
-            avaliador.save()
+            # Interact with the API endpoint
+            action = ["pessoas", "update"]
+            params = {
+                "id": pessoa.id,
+                "nome": form_pessoa.cleaned_data['nome'],
+                "endereco": form_pessoa.cleaned_data['endereco'],
+                "telefone": form_pessoa.cleaned_data['telefone'],
+                "registro_geral": form_pessoa.cleaned_data['registro_geral'],
+                "formacao": form_pessoa.cleaned_data['formacao'],
+            }
+            result_pessoa = client.action(schema, action, params=params)
+
+            action = ["avaliadores", "update"]
+            params = {
+                "id": id,
+                "numero_registro": form_avaliador.cleaned_data['numero_registro'],
+                "pessoa": result_pessoa['id'],
+            }
+            client.action(schema, action, params=params)
 
             messages.success(request, 'O avaliador foi alterado com sucesso.')
             return redirect(avaliadores)
