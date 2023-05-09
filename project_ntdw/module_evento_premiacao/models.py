@@ -10,6 +10,14 @@ class Cronograma(models.Model):
     class Meta:
         ordering = ['id']
 
+    # def to_json(self):
+    #     return{
+    #         "id": self.id,
+    #         "data_inicio": self.data_inicio, ideia de já deixar a classe como json
+    #         "data_final": self.data_final,
+    #         "descricao": self.descricao,
+    #     }
+
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id}'

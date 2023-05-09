@@ -1,9 +1,0 @@
-    Implementar as classes entidades com seus relacionamentos - ok
-    Fazer o mapeamento ORM (se houver) - ok
-    Configurar o Provedor de Persistencia (se houver) - ok
-    Criar a estratégia de acesso por meio de (INCLUIR, ALTERAR, EXCLUIR, LISTAR POR ID E LISTA TODOS) - ok
-    Listar projetos e autores (Geral) - ok
-    Listar autores e projetos (Geral) - ok
-    Listar projetos enviado não avaliado (visualizar dados dos projetos, inclusive autores) - ok
-    Listar Projetos avaliados (visualizar dados projetos e dados da avaliação) - ok
-    Listar Projetos vencedores por ordem de notas maiores (visualizar dados projetos) - ok

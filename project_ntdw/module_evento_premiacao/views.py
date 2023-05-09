@@ -49,7 +49,7 @@ class AvaliadorViewSetApi(viewsets.ModelViewSet):
     serializer_class = AvaliadorSerializer
     permission_classes = []
 
-
+#Projeto Avaliado
 class ProjetoAvaliadoViewSetApi(viewsets.ModelViewSet):
     queryset = Projeto_Avaliado.objects.all()
     serializer_class = ProjetoSerializer
@@ -74,12 +74,26 @@ def index(request):
 
 # -------------------- CRONOGRAMAS --------------------------
 def cronogramas(request):
-    return render(request, 'cronograma/cronogramas.html', {'cronogramas': Cronograma.objects.all()})
+    # Initialize a client & load the schema document
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with the API endpoint
+    action = ["cronogramas", "list"]
+    result = client.action(schema, action)
+    return render(request, 'cronograma/cronogramas.html', {'cronogramas': result})
 
 
 def cronograma_delete(request, id):
-    cronograma = Cronograma.objects.get(id=id)
-    cronograma.delete()
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with the API endpoint
+    action = ["cronogramas", "delete"]
+    params = {
+        "id": id,
+    }
+    client.action(schema, action, params=params)
     return redirect(cronogramas)
 
 
@@ -100,6 +114,20 @@ def cronograma_editar(request, id):
             cronograma.data_final = form.cleaned_data['data_final']
             cronograma.save()
 
+            # Initialize a client & load the schema document
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+            # Interact with the API endpoint
+            action = ["cronogramas", "update"]
+            params = {
+                "id": id,
+                "data_inicio": form.cleaned_data['data_inicio'].isoformat(),
+                "data_final": form.cleaned_data['data_final'].isoformat(),
+                "descricao": form.cleaned_data['descricao'],
+            }
+            client.action(schema, action, params=params)
+
             messages.success(request, 'O cronograma foi alterado com sucesso.')
             return redirect(cronogramas)
         else:
@@ -112,7 +140,19 @@ def cronograma_create(request):
     if request.method == 'POST':
         form = FormCronograma(request.POST)
         if form.is_valid():
-            form.save()
+            print(form.cleaned_data['data_inicio'])
+            # Initialize a client & load the schema document
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+            # Interact with the API endpoint
+            action = ["cronogramas", "create"]
+            params = {
+                "data_inicio": form.cleaned_data['data_inicio'].isoformat(),
+                "data_final": form.cleaned_data['data_final'].isoformat(),
+                "descricao": form.cleaned_data['descricao'],
+            }
+            client.action(schema, action, params=params)
             messages.success(request, 'O cronograma foi criado com sucesso.')
         return redirect(cronogramas)
     elif request.method == 'GET':
@@ -143,7 +183,7 @@ def evento_delete(request, id):
     params = {
         "id": id,
     }
-    result = client.action(schema, action, params=params)
+    client.action(schema, action, params=params)
     messages.success(request, 'O registro foi deletado.')
     return redirect(eventos)
 
@@ -169,7 +209,7 @@ def evento_editar(request, id):
                 "ano": form.cleaned_data['ano'],
                 "cronograma_fk": form.cleaned_data['cronograma_fk'].id,
             }
-            result = client.action(schema, action, params=params)
+            client.action(schema, action, params=params)
             messages.success(request, 'O cronograma foi alterado com sucesso.')
             return redirect(eventos)
         else:

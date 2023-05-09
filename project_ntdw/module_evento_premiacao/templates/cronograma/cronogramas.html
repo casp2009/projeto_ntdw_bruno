@@ -6,12 +6,13 @@
         <h1>Lista de cronogramas</h1>
         <table class="table table-hover" style="width: 50%; margin-left: auto; margin-right: auto; margin-top: 20px;">
             <tr>
+                <th>#id</th>
                 <th>Data Inicial</th>
                 <th>Data Final</th>
                 <th>Descrição</th>
             </tr>
             {% for cronograma in cronogramas %}
-                <tr>
+                <tr><td>{{ cronograma.id }}</td>
                     <td>{{ cronograma.data_inicio }}</td>
                     <td>{{ cronograma.data_final }}</td>
                     <td>{{ cronograma.descricao }}</td>
