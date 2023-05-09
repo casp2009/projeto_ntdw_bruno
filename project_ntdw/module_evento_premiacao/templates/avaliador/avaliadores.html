@@ -14,18 +14,22 @@
                 <th>Nº de registro avaliador</th>
             </tr>
             {% for avaliador in avaliadores %}
-                <tr>
-                    <td>{{ avaliador.pessoa.nome }}</td>
-                    <td>{{ avaliador.pessoa.endereco }}</td>
-                    <td>{{ avaliador.pessoa.telefone }}</td>
-                    <td>{{ avaliador.pessoa.registro_geral }}</td>
-                    <td>{{ avaliador.pessoa.formacao }}</td>
-                    <td>{{ avaliador.numero_registro_avaliador }}</td>
-                    <td><a href="{% url 'avaliador_editar' avaliador.id %}" class="btn btn-outline-warning">Editar</a></td>
-                    <td><a href="{% url 'avaliador_delete' avaliador.id %}"
-                           onclick="return confirm('Certeza que deseja deletar esse registro?')"
-                           class="btn btn-outline-danger">Deletar</a></td>
-                </tr>
+                {% for pessoa in pessoas %}
+                    {% if avaliador.pessoa == pessoa.id %}
+                        <tr>
+                            <td>{{ pessoa.nome }}</td>
+                            <td>{{ pessoa.endereco }}</td>
+                            <td>{{ pessoa.telefone }}</td>
+                            <td>{{ pessoa.registro_geral }}</td>
+                            <td>{{ pessoa.formacao }}</td>
+                            <td>{{ avaliador.biografia }}</td>
+                            <td><a href="{% url 'avaliador_editar' avaliador.id %}" class="btn btn-outline-warning">Editar</a></td>
+                            <td><a href="{% url 'avaliador_delete' avaliador.id %}"
+                                   onclick="return confirm('Certeza que deseja deletar esse registro?')"
+                                   class="btn btn-outline-danger">Deletar</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </table>
     {% else %}

@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import *
 from .serializer import *
@@ -383,7 +383,18 @@ def autor_editar(request, id):
 # ------------- AVALIADORES ----------------------
 
 def avaliadores(request):
-    return render(request, 'avaliador/avaliadores.html', {'avaliadores': Avaliador.objects.all()})
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with the API endpoint
+    action_avaliadores = ["avaliadores", "list"]
+    result_avaliadores = client.action(schema, action_avaliadores)
+    print(result_avaliadores)
+
+    action_pessoas = ["pessoas", "list"]
+    result_pessoas = client.action(schema, action_pessoas)
+    print(result_pessoas)
+    return render(request, 'avaliador/avaliadores.html', {'avaliadores': result_avaliadores, 'pessoas':result_pessoas})
 
 
 def avaliador_create(request):
@@ -394,14 +405,30 @@ def avaliador_create(request):
         form_avaliador = FormAvaliador(request.POST)
 
         if form_pessoa.is_valid() and form_avaliador.is_valid():
-            pessoa = form_pessoa.save()
-            avaliador = form_avaliador.save(commit=False)
-            avaliador.pessoa = pessoa
-            avaliador.save()
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+            # Interact with the API endpoint
+            action = ["pessoas", "create"]
+            params = {
+                "nome": form_pessoa.cleaned_data['nome'],
+                "endereco": form_pessoa.cleaned_data['endereco'],
+                "telefone": form_pessoa.cleaned_data['telefone'],
+                "registro_geral": form_pessoa.cleaned_data['registro_geral'],
+                "formacao": form_pessoa.cleaned_data['formacao'],
+            }
+            result_pessoa = client.action(schema, action, params=params)
+
+            action_avaliador = ["avaliadores", "create"]
+            params = {
+                "biografia": form_avaliador.cleaned_data['numero_registro_avaliador'],
+                "pessoa": result_pessoa['id'],
+            }
+            client.action(schema, action_avaliador, params=params)
             messages.success(request, 'O avaliador foi criado com sucesso.')
         else:
             messages.error(request, 'O formulário não é válido.')
-        return redirect(autores)
+        return redirect(avaliadores)
     elif request.method == 'GET':
         return render(request, 'avaliador/avaliador_create.html',
                       {'form_pessoa': form_pessoa, 'form_avaliador': form_avaliador})
@@ -409,14 +436,28 @@ def avaliador_create(request):
 
 def avaliador_delete(request, id):
     avaliador = Avaliador.objects.get(id=id)
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
     if avaliador.pessoa is None:
-        pass
+        action_autor = ["avaliadores", "delete"]
+        params_avaliador = {
+            "id": id,
+        }
+        client.action(schema, action_autor, params=params_avaliador)
     else:
-        pessoa = Pessoa.objects.get(id=avaliador.pessoa.id)
-        pessoa.delete()
+        action_avaliador = ["avaliadores", "delete"]
+        params_avaliador = {
+            "id": id,
+        }
+        client.action(schema, action_avaliador, params=params_avaliador)
+
+        action_pessoa = ["pessoas", "delete"]
+        params_pessoa = {
+            "id": avaliador.pessoa.id,
+        }
+        client.action(schema, action_pessoa, params=params_pessoa)
 
     messages.success(request, 'O registro foi deletado.')
-    avaliador.delete()
     return redirect(avaliadores)
 
 
