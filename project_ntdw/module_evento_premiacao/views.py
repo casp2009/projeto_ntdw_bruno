@@ -244,7 +244,17 @@ def evento_create(request):
 # ------------- AUTORES ----------------------
 
 def autores(request):
-    return render(request, 'autor/autores.html', {'autores': Autor.objects.all()})
+    # Initialize a client & load the schema document
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with the API endpoint
+    action_autores = ["autores", "list"]
+    result_autores = client.action(schema, action_autores)
+
+    action_pessoas = ["pessoas", "list"]
+    result_pessoas = client.action(schema, action_pessoas)
+    return render(request, 'autor/autores.html', {'autores': result_autores, 'pessoas': result_pessoas})
 
 
 def autor_create(request):
@@ -255,10 +265,27 @@ def autor_create(request):
         form_autor = FormAutor(request.POST)
 
         if form_pessoa.is_valid() and form_autor.is_valid():
-            pessoa = form_pessoa.save()
-            autor = form_autor.save(commit=False)
-            autor.pessoa = pessoa
-            autor.save()
+            # Initialize a client & load the schema document
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+            # Interact with the API endpoint
+            action = ["pessoas", "create"]
+            params = {
+                "nome": form_pessoa.cleaned_data['nome'],
+                "endereco": form_pessoa.cleaned_data['endereco'],
+                "telefone": form_pessoa.cleaned_data['telefone'],
+                "registro_geral": form_pessoa.cleaned_data['registro_geral'],
+                "formacao": form_pessoa.cleaned_data['formacao'],
+            }
+            result_pessoa = client.action(schema, action, params=params)
+
+            action = ["autores", "create"]
+            params = {
+                "biografia": form_autor.cleaned_data['biografia'],
+                "pessoa": result_pessoa['id'],
+            }
+            client.action(schema, action, params=params)
             messages.success(request, 'O autor foi criado com sucesso.')
         else:
             messages.error(request, 'O formulário não é válido.')
@@ -283,13 +310,25 @@ def autores_projetos(request):
 
 def autor_delete(request, id):
     autor = Autor.objects.get(id=id)
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
     if autor.pessoa is None:
         pass
     else:
-        pessoa = Pessoa.objects.get(id=autor.pessoa.id)
-        pessoa.delete()
+        action_autor = ["autores", "delete"]
+        params_autor = {
+            "id": id,
+        }
+        client.action(schema, action_autor, params=params_autor)
+
+        action_pessoa = ["pessoas", "delete"]
+        params_pessoa = {
+            "id": autor.pessoa.id,
+        }
+        client.action(schema, action_pessoa, params=params_pessoa)
+
     messages.success(request, 'O registro foi deletado.')
-    autor.delete()
     return redirect(autores)
 
 
@@ -309,17 +348,29 @@ def autor_editar(request, id):
         form_pessoa = FormPessoa(request.POST, instance=pessoa)
 
         if form_autor.is_valid() and form_pessoa.is_valid():
-            pessoa = form_pessoa.save(commit=False)
-            pessoa.nome = form_pessoa.cleaned_data['nome']
-            pessoa.endereco = form_pessoa.cleaned_data['endereco']
-            pessoa.telefone = form_pessoa.cleaned_data['telefone']
-            pessoa.registro_geral = form_pessoa.cleaned_data['registro_geral']
-            pessoa.formacao = form_pessoa.cleaned_data['formacao']
-            pessoa.save()
+            # Initialize a client & load the schema document
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
 
-            autor = form_autor.save(commit=False)
-            autor.biografia = form_autor.cleaned_data['biografia']
-            autor.save()
+            # Interact with the API endpoint
+            action = ["pessoas", "update"]
+            params = {
+                "id": pessoa.id,
+                "nome": form_pessoa.cleaned_data['nome'],
+                "endereco": form_pessoa.cleaned_data['endereco'],
+                "telefone": form_pessoa.cleaned_data['telefone'],
+                "registro_geral": form_pessoa.cleaned_data['registro_geral'],
+                "formacao": form_pessoa.cleaned_data['formacao'],
+            }
+            result_pessoa = client.action(schema, action, params=params)
+
+            action = ["autores", "update"]
+            params = {
+                "id": id,
+                "biografia": form_autor.cleaned_data['biografia'],
+                "pessoa": result_pessoa['id'],
+            }
+            client.action(schema, action, params=params)
 
             messages.success(request, 'O autor foi alterado com sucesso.')
             return redirect(autores)
