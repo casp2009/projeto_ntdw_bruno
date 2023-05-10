@@ -102,7 +102,7 @@ class Projeto_Avaliado(models.Model):
     projeto = models.OneToOneField(Projeto, on_delete=models.CASCADE)
     avaliador = models.ForeignKey('Avaliador', on_delete=models.SET_NULL, null=True)
     parecer = models.CharField(max_length=300, null=False)
-    nota = models.DecimalField(max_digits=2, decimal_places=False)
+    nota = models.FloatField()
     data_avaliacao = models.DateTimeField(null=False)
 
     class Meta:

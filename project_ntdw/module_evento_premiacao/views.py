@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import *
 from .serializer import *
@@ -52,7 +52,7 @@ class AvaliadorViewSetApi(viewsets.ModelViewSet):
 #Projeto Avaliado
 class ProjetoAvaliadoViewSetApi(viewsets.ModelViewSet):
     queryset = Projeto_Avaliado.objects.all()
-    serializer_class = ProjetoSerializer
+    serializer_class = ProjetoAvaliadoSerializer
     permission_classes = []
 
 
@@ -595,13 +595,28 @@ def projeto_editar(request, id):
     elif request.method == 'POST':
         form = FormProjeto(request.POST, instance=projeto)
         if form.is_valid():
-            projeto = form.save(commit=False)
-            projeto.titulo = form.cleaned_data['titulo']
-            projeto.resumo = form.cleaned_data['resumo']
-            projeto.data_alteracao = date.today()
-            projeto.autores.set(form.cleaned_data['autores'])
-            projeto.eventos.set(form.cleaned_data['eventos'])
-            projeto.save()
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+            # Interact with the API endpoint
+            action = ["projetos", "update"]
+            autores = []
+            eventos = []
+            for autor in form.cleaned_data['autores']:
+                autores.append(autor.id)
+            for evento in form.cleaned_data['eventos']:
+                eventos.append(evento.id)
+            params = {
+                "id": id,
+                "titulo": form.cleaned_data['titulo'],
+                "resumo": form.cleaned_data['resumo'],
+                "data_envio": projeto.data_envio.isoformat(),
+                "data_alteracao": date.today().isoformat(),
+                "foi_avaliado": False,
+                "eventos": eventos,
+                "autores": autores,
+            }
+            client.action(schema, action, params=params)
             messages.success(request, 'O projeto foi alterado com sucesso.')
             return redirect(projetos)
         else:
@@ -616,13 +631,28 @@ def projeto_avaliar(request, id):
     if request.method == 'POST':
         form = FormProjetoAvaliado(request.POST)
         if form.is_valid():
-            projeto_avaliado = form.save(commit=False)
-            projeto_avaliado.avaliador = form.cleaned_data['avaliador']
-            projeto_avaliado.data_avaliacao = datetime.now()
-            projeto_escolhido = form.cleaned_data['projeto']
-            projeto_escolhido.foi_avaliado = True
-            projeto_escolhido.save()
-            projeto_avaliado.save()
+            # Initialize a client & load the schema document
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+            # Interact with the API endpoint
+            action = ["projeto_avaliado", "create"]
+            params = {
+                "parecer": form.cleaned_data['parecer'],
+                "nota": float(form.cleaned_data['nota']),
+                "data_avaliacao": datetime.now().isoformat(),
+                "projeto": form.cleaned_data['projeto'].id,
+                "avaliador": form.cleaned_data['avaliador'].id,
+            }
+            client.action(schema, action, params=params)
+
+            action_projeto = ["projetos", "partial_update"]
+            params_projeto = {
+                "id": id,
+                "foi_avaliado": True,
+                "data_alteracao": date.today().isoformat(),
+            }
+            client.action(schema, action_projeto, params=params_projeto)
             messages.success(request, 'O projeto foi avaliado com sucesso.')
         else:
             messages.error(request, 'O formulário não é válido.')
