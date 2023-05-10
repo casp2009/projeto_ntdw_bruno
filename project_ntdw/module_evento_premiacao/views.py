@@ -540,13 +540,28 @@ def projeto_create(request):
     if request.method == 'POST':
         form = FormProjeto(request.POST)
         if form.is_valid():
-            projeto = form.save(commit=False)
-            projeto.foi_avaliado = False
-            projeto.data_envio = date.today()
-            projeto.data_alteracao = date.today()
-            projeto.save()
-            projeto.autores.set(form.cleaned_data['autores'])
-            projeto.eventos.set(form.cleaned_data['eventos'])
+            # Initialize a client & load the schema document
+            client = coreapi.Client()
+            schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+            # Interact with the API endpoint
+            action = ["projetos", "create"]
+            autores = []
+            eventos = []
+            for autor in form.cleaned_data['autores']:
+                autores.append(autor.id)
+            for evento in form.cleaned_data['eventos']:
+                eventos.append(evento.id)
+            params = {
+                "titulo": form.cleaned_data['titulo'],
+                "resumo": form.cleaned_data['resumo'],
+                "data_envio": date.today().isoformat(),
+                "data_alteracao": date.today().isoformat(),
+                "foi_avaliado": False,
+                "eventos": eventos,
+                "autores": autores,
+            }
+            client.action(schema, action, params=params)
             messages.success(request, 'O projeto foi criado com sucesso.')
         else:
             messages.error(request, 'O formulário não é válido.')
@@ -556,8 +571,16 @@ def projeto_create(request):
 
 
 def projeto_delete(request, id):
-    projeto = Projeto.objects.get(id=id)
-    projeto.delete()
+    # Initialize a client & load the schema document
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with the API endpoint
+    action = ["projetos", "delete"]
+    params = {
+        "id": id,
+    }
+    client.action(schema, action, params=params)
     messages.success(request, 'O projeto foi deletado.')
     return redirect(projetos)
 
