@@ -295,17 +295,23 @@ def autor_create(request):
 
 
 def autores_projetos(request):
-    autores = Autor.objects.all()
-    projetos = Projeto.objects.all()
-    autoresFinal = []
-    for autor in autores:
-        for projeto in projetos:
-            for at2 in projeto.autores.all():
-                if autor.pessoa.nome == at2.pessoa.nome:
-                    autoresFinal.append(autor)
-    lista_sem_duplicados = list(set(autoresFinal))
-    return render(request, 'autor/autores_projetos.html', {'projetos': Projeto.objects.all(),
-                                                           'autores': lista_sem_duplicados})
+    client = coreapi.Client()
+    schema = client.get("http://127.0.0.1:8000/module_evento_premiacao/docs/")
+
+    # Interact with autures
+    action_autores = ["autores", "list"]
+    result_autores = client.action(schema, action_autores)
+
+    # Interact with pessoas
+    action_pessoas = ["pessoas", "list"]
+    result_pessoas = client.action(schema, action_pessoas)
+
+    # Interact with projetos
+    action_projetos = ["projetos", "list"]
+    result_projetos = client.action(schema, action_projetos)
+
+    return render(request, 'autor/autores_projetos.html', {'projetos': result_projetos,
+                                                           'autores': result_autores, 'pessoas': result_pessoas})
 
 
 def autor_delete(request, id):

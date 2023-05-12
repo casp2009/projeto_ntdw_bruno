@@ -15,21 +15,27 @@
                 <th>Projetos</th>
             </tr>
             {% for autor in autores %}
-                <tr>
-                    <td>{{ autor.pessoa.nome }}</td>
-                    <td>{{ autor.pessoa.endereco }}</td>
-                    <td>{{ autor.pessoa.telefone }}</td>
-                    <td>{{ autor.pessoa.registro_geral }}</td>
-                    <td>{{ autor.pessoa.formacao }}</td>
-                    <td>{{ autor.biografia }}</td>
-                    <td>
-                    {% for projeto in projetos %}
-                        {% if projeto.autor.nome == autor.nome %}
-                            <span><strong>Titulo:</strong> {{ projeto.titulo }}</span><br />
-                        {% endif %}
-                    {% endfor %}
-                    </td>
-                </tr>
+                {% for pessoa in pessoas %}
+                    {% if autor.pessoa == pessoa.id %}
+                        <tr>
+                            <td>{{ pessoa.nome }}</td>
+                            <td>{{ pessoa.endereco }}</td>
+                            <td>{{ pessoa.telefone }}</td>
+                            <td>{{ pessoa.registro_geral }}</td>
+                            <td>{{ pessoa.formacao }}</td>
+                            <td>{{ autor.biografia }}</td>
+                            <td>
+                            {% for projeto in projetos %}
+                                {% for auts in projeto.autores %}
+                                    {% if auts == autor.id %}
+                                        <span><strong>Titulo:</strong> {{ projeto.titulo }}</span><br />
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </table>
     {% else %}
